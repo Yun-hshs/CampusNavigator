@@ -5,13 +5,9 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QDockWidget>
-#include <QVBoxLayout>
-#include <QGroupBox>
-#include <QHBoxLayout>
+#include "graph/Graph.h"
 
-class OsmMapView;
-class MapScene;
-class PathHighlighter;
+class MapView;
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -19,9 +15,9 @@ public:
     explicit MainWindow(QWidget* parent = nullptr);
 
 private slots:
+    void onNodeClicked(int id);
     void onNavigate();
     void onClear();
-    void onBuildingClicked(int id, const QString& name, const QString& desc);
     void onSearchReturn();
 
 private:
@@ -29,10 +25,14 @@ private:
     void setupToolBar();
     void setupInfoPanel();
     void loadMapData();
+    void navigate(int startId, int endId);
 
-    OsmMapView*      m_osmView     = nullptr;
-    MapScene*        m_mapScene    = nullptr;
-    PathHighlighter* m_highlighter = nullptr;
+    Graph m_graph;
+    MapView* m_mapView = nullptr;
+
+    int m_startId = -1;
+    int m_endId   = -1;
+    int m_clickCount = 0;
 
     QLineEdit*   m_searchEdit  = nullptr;
     QComboBox*   m_startCombo  = nullptr;
@@ -41,7 +41,8 @@ private:
     QPushButton* m_clearBtn    = nullptr;
 
     QLabel* m_infoTitle  = nullptr;
-    QLabel* m_infoType   = nullptr;
     QLabel* m_infoDetail = nullptr;
     QLabel* m_pathInfo   = nullptr;
+    QLabel* m_pathLabel  = nullptr;
+    QLabel* m_statusLabel = nullptr;
 };
