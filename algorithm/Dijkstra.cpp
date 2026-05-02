@@ -13,9 +13,17 @@ QVector<int> Dijkstra::findPath(const Graph& graph, int startId, int endId) {
     QMap<int, int> prev;
     QSet<int> visited;
 
+    // Initialize distances for all non-decoration nodes
     for (const auto& node : graph.allNodes()) {
+        if (node.type == "decoration")
+            continue;  // Skip decoration nodes entirely
         dist[node.id] = std::numeric_limits<double>::max();
     }
+
+    // Start/end must not be decoration nodes
+    if (!dist.contains(startId) || !dist.contains(endId))
+        return {};
+
     dist[startId] = 0;
 
     using P = std::pair<double, int>;
@@ -36,6 +44,8 @@ QVector<int> Dijkstra::findPath(const Graph& graph, int startId, int endId) {
         for (const auto& e : graph.getEdges(u)) {
             if (visited.contains(e.to))
                 continue;
+            if (!dist.contains(e.to))
+                continue;  // Skip decoration neighbors
             double nd = dist[u] + e.weight;
             if (nd < dist[e.to]) {
                 dist[e.to] = nd;

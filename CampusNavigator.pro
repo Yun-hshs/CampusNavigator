@@ -18,9 +18,11 @@ SOURCES += \
 HEADERS += \
     MainWindow.h \
     view/MapView.h \
+    view/LabelManager.h \
     graph/Graph.h \
     algorithm/Dijkstra.h \
-    data/DataLoader.h
+    data/DataLoader.h \
+    data/GeoTransform.h
 
 # Copy data directory to output so the app finds map.json at runtime
 CONFIG(release, debug|release) {

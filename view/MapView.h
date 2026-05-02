@@ -3,6 +3,9 @@
 #include <QGraphicsObject>
 #include <QGraphicsDropShadowEffect>
 #include <QMap>
+#include <QTimer>
+#include "data/GeoTransform.h"
+#include "view/LabelManager.h"
 
 class QGraphicsScene;
 class QGraphicsPathItem;
@@ -96,6 +99,8 @@ public:
     void centerOnNode(int id);
     void highlightNode(int id, const QColor& color);
 
+    QPointF nodeScreenPos(int id) const;
+
     void zoomIn();
     void zoomOut();
     void fitMap();
@@ -114,15 +119,19 @@ private:
     qreal depthSort(qreal x, qreal y) const;
     void drawGround();
     void drawGrassPatches();
+    void drawAreas();
     void drawRoads();
     void drawBuildings();
     void drawTrees();
+    void drawShadows();
     void resetBuildingStyle(int id);
+    void updateLabelsAndLOD();
 
     QGraphicsScene* m_scene = nullptr;
     Graph* m_graph = nullptr;
 
     QMap<int, IsometricBuilding*> m_buildings;
+    LabelManager* m_labelMgr = nullptr;
 
     // Path state
     QVector<int>                  m_pathIds;
@@ -132,10 +141,22 @@ private:
     AnimBall*                   m_ball      = nullptr;
     QSequentialAnimationGroup*  m_animGroup = nullptr;
 
+    // Marching ants animation
+    QTimer*        m_antsTimer   = nullptr;
+    qreal          m_antsOffset  = 0;
+    QGraphicsPathItem* m_antsItem = nullptr;
+
+    // Non-focus mask
+    QGraphicsPathItem* m_maskItem = nullptr;
+
     // Isometric projection parameters
     static constexpr double SX = 0.866;          // cos(30°)
     static constexpr double SY = 0.5;            // sin(30°)
     static constexpr double SCALE = 0.5;         // overall scale
+
+    // Coordinate transformation
+    GeoTransform m_geo;
+    double m_logicScale = 0.3;  // 逻辑坐标单位 → 米 的比例因子
     static constexpr double ZOOM_FACTOR = 1.15;
     static constexpr double MIN_SCALE   = 0.05;
     static constexpr double MAX_SCALE   = 8.0;

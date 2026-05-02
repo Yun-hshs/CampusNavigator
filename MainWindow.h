@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QDockWidget>
+#include <QFrame>
 #include "graph/Graph.h"
 
 class MapView;
@@ -19,6 +20,7 @@ private slots:
     void onNavigate();
     void onClear();
     void onSearchReturn();
+    void onTravelModeChanged(int index);
 
 private:
     void setupUi();
@@ -26,6 +28,8 @@ private:
     void setupInfoPanel();
     void loadMapData();
     void navigate(int startId, int endId);
+    void showPoiBubble(int nodeId, const QPointF& screenPos);
+    void hidePoiBubble();
 
     Graph m_graph;
     MapView* m_mapView = nullptr;
@@ -37,6 +41,7 @@ private:
     QLineEdit*   m_searchEdit  = nullptr;
     QComboBox*   m_startCombo  = nullptr;
     QComboBox*   m_endCombo    = nullptr;
+    QComboBox*   m_modeCombo   = nullptr;
     QPushButton* m_navigateBtn = nullptr;
     QPushButton* m_clearBtn    = nullptr;
 
@@ -44,5 +49,12 @@ private:
     QLabel* m_infoDetail = nullptr;
     QLabel* m_pathInfo   = nullptr;
     QLabel* m_pathLabel  = nullptr;
+    QLabel* m_timeLabel  = nullptr;
     QLabel* m_statusLabel = nullptr;
+
+    QFrame* m_poiBubble = nullptr;
+
+    // Travel speeds (m/min)
+    static constexpr double WALK_SPEED = 83.3;   // 5 km/h
+    static constexpr double BIKE_SPEED = 250.0;   // 15 km/h
 };
