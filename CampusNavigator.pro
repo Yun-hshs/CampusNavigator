@@ -30,3 +30,6 @@ CONFIG(release, debug|release) {
 } else {
     QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$shell_path($$PWD/data) $$shell_path($$OUT_PWD/debug/data)
 }
+
+RESOURCES += \
+    res.qrc
