@@ -1,0 +1,1114 @@
+{
+  "buildings": [
+    {
+      "id": 1,
+      "name": "小北门",
+      "type": "gate",
+      "center_x": 428,
+      "center_y": 222,
+      "description": "西北侧校门",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 406,
+          "y": 200
+        },
+        {
+          "x": 450,
+          "y": 200
+        },
+        {
+          "x": 450,
+          "y": 244
+        },
+        {
+          "x": 406,
+          "y": 244
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "风雨操场",
+      "type": "sports",
+      "center_x": 515,
+      "center_y": 266,
+      "description": "室内体育场馆",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 493,
+          "y": 244
+        },
+        {
+          "x": 537,
+          "y": 244
+        },
+        {
+          "x": 537,
+          "y": 287
+        },
+        {
+          "x": 493,
+          "y": 287
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "篮球场",
+      "type": "sports",
+      "center_x": 617,
+      "center_y": 251,
+      "description": "室外篮球场地",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 595,
+          "y": 229
+        },
+        {
+          "x": 639,
+          "y": 229
+        },
+        {
+          "x": 639,
+          "y": 273
+        },
+        {
+          "x": 595,
+          "y": 273
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "田径场",
+      "type": "sports",
+      "center_x": 704,
+      "center_y": 207,
+      "description": "主田径场",
+      "aliases": [
+        "操场"
+      ],
+      "polygon": [
+        {
+          "x": 682,
+          "y": 186
+        },
+        {
+          "x": 726,
+          "y": 186
+        },
+        {
+          "x": 726,
+          "y": 229
+        },
+        {
+          "x": 682,
+          "y": 229
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "13栋公寓",
+      "type": "dorm",
+      "center_x": 864,
+      "center_y": 48,
+      "description": "学生公寓区",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 842,
+          "y": 26
+        },
+        {
+          "x": 886,
+          "y": 26
+        },
+        {
+          "x": 886,
+          "y": 69
+        },
+        {
+          "x": 842,
+          "y": 69
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "游泳馆",
+      "type": "sports",
+      "center_x": 878,
+      "center_y": 237,
+      "description": "室内游泳馆",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 857,
+          "y": 215
+        },
+        {
+          "x": 900,
+          "y": 215
+        },
+        {
+          "x": 900,
+          "y": 258
+        },
+        {
+          "x": 857,
+          "y": 258
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "主教学楼",
+      "type": "academic",
+      "center_x": 878,
+      "center_y": 484,
+      "description": "核心教学区",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 857,
+          "y": 462
+        },
+        {
+          "x": 900,
+          "y": 462
+        },
+        {
+          "x": 900,
+          "y": 505
+        },
+        {
+          "x": 857,
+          "y": 505
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "3栋教学楼",
+      "type": "academic",
+      "center_x": 806,
+      "center_y": 760,
+      "description": "公共教学楼",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 784,
+          "y": 738
+        },
+        {
+          "x": 828,
+          "y": 738
+        },
+        {
+          "x": 828,
+          "y": 781
+        },
+        {
+          "x": 784,
+          "y": 781
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "人文楼",
+      "type": "academic",
+      "center_x": 762,
+      "center_y": 876,
+      "description": "文科学院区",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 740,
+          "y": 854
+        },
+        {
+          "x": 784,
+          "y": 854
+        },
+        {
+          "x": 784,
+          "y": 898
+        },
+        {
+          "x": 740,
+          "y": 898
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "阿尔斯特学院",
+      "type": "academic",
+      "center_x": 864,
+      "center_y": 890,
+      "description": "中外合作办学学院",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 842,
+          "y": 869
+        },
+        {
+          "x": 886,
+          "y": 869
+        },
+        {
+          "x": 886,
+          "y": 912
+        },
+        {
+          "x": 842,
+          "y": 912
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "南门",
+      "type": "gate",
+      "center_x": 690,
+      "center_y": 963,
+      "description": "校园正南门",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 668,
+          "y": 941
+        },
+        {
+          "x": 711,
+          "y": 941
+        },
+        {
+          "x": 711,
+          "y": 985
+        },
+        {
+          "x": 668,
+          "y": 985
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "行政楼",
+      "type": "academic",
+      "center_x": 544,
+      "center_y": 876,
+      "description": "行政办公枢纽",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 522,
+          "y": 854
+        },
+        {
+          "x": 566,
+          "y": 854
+        },
+        {
+          "x": 566,
+          "y": 898
+        },
+        {
+          "x": 522,
+          "y": 898
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "轻工与化工学院",
+      "type": "academic",
+      "center_x": 443,
+      "center_y": 774,
+      "description": "专业学院楼",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 421,
+          "y": 752
+        },
+        {
+          "x": 464,
+          "y": 752
+        },
+        {
+          "x": 464,
+          "y": 796
+        },
+        {
+          "x": 421,
+          "y": 796
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "实验楼",
+      "type": "academic",
+      "center_x": 486,
+      "center_y": 600,
+      "description": "基础实验楼",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 464,
+          "y": 578
+        },
+        {
+          "x": 508,
+          "y": 578
+        },
+        {
+          "x": 508,
+          "y": 622
+        },
+        {
+          "x": 464,
+          "y": 622
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "实训楼",
+      "type": "academic",
+      "center_x": 341,
+      "center_y": 600,
+      "description": "工程训练中心",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 319,
+          "y": 578
+        },
+        {
+          "x": 363,
+          "y": 578
+        },
+        {
+          "x": 363,
+          "y": 622
+        },
+        {
+          "x": 319,
+          "y": 622
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "西门",
+      "type": "gate",
+      "center_x": 268,
+      "center_y": 701,
+      "description": "校园西侧门",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 246,
+          "y": 680
+        },
+        {
+          "x": 290,
+          "y": 680
+        },
+        {
+          "x": 290,
+          "y": 723
+        },
+        {
+          "x": 246,
+          "y": 723
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "研究生综合楼",
+      "type": "academic",
+      "center_x": 341,
+      "center_y": 396,
+      "description": "研究生教学与办公",
+      "aliases": [
+        "研究生楼"
+      ],
+      "polygon": [
+        {
+          "x": 319,
+          "y": 375
+        },
+        {
+          "x": 363,
+          "y": 375
+        },
+        {
+          "x": 363,
+          "y": 418
+        },
+        {
+          "x": 319,
+          "y": 418
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "name": "图书馆",
+      "type": "academic",
+      "center_x": 631,
+      "center_y": 542,
+      "description": "中心图书馆",
+      "aliases": [
+        "图"
+      ],
+      "polygon": [
+        {
+          "x": 610,
+          "y": 520
+        },
+        {
+          "x": 653,
+          "y": 520
+        },
+        {
+          "x": 653,
+          "y": 563
+        },
+        {
+          "x": 610,
+          "y": 563
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "name": "轻工业博物馆",
+      "type": "other",
+      "center_x": 733,
+      "center_y": 484,
+      "description": "校史与行业博物馆",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 711,
+          "y": 462
+        },
+        {
+          "x": 755,
+          "y": 462
+        },
+        {
+          "x": 755,
+          "y": 505
+        },
+        {
+          "x": 711,
+          "y": 505
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "name": "北门",
+      "type": "gate",
+      "center_x": 810,
+      "center_y": 46,
+      "description": "校园北门",
+      "aliases": [],
+      "polygon": [
+        {
+          "x": 795,
+          "y": 31
+        },
+        {
+          "x": 825,
+          "y": 31
+        },
+        {
+          "x": 825,
+          "y": 61
+        },
+        {
+          "x": 795,
+          "y": 61
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": 1,
+      "x": 428,
+      "y": 222,
+      "building_id": 1,
+      "is_entrance": 1
+    },
+    {
+      "id": 2,
+      "x": 515,
+      "y": 266,
+      "building_id": 2,
+      "is_entrance": 1
+    },
+    {
+      "id": 3,
+      "x": 617,
+      "y": 251,
+      "building_id": 3,
+      "is_entrance": 1
+    },
+    {
+      "id": 4,
+      "x": 704,
+      "y": 207,
+      "building_id": 4,
+      "is_entrance": 1
+    },
+    {
+      "id": 5,
+      "x": 864,
+      "y": 48,
+      "building_id": 5,
+      "is_entrance": 1
+    },
+    {
+      "id": 6,
+      "x": 878,
+      "y": 237,
+      "building_id": 6,
+      "is_entrance": 1
+    },
+    {
+      "id": 7,
+      "x": 878,
+      "y": 484,
+      "building_id": 7,
+      "is_entrance": 1
+    },
+    {
+      "id": 8,
+      "x": 806,
+      "y": 760,
+      "building_id": 8,
+      "is_entrance": 1
+    },
+    {
+      "id": 9,
+      "x": 762,
+      "y": 876,
+      "building_id": 9,
+      "is_entrance": 1
+    },
+    {
+      "id": 10,
+      "x": 864,
+      "y": 890,
+      "building_id": 10,
+      "is_entrance": 1
+    },
+    {
+      "id": 11,
+      "x": 690,
+      "y": 963,
+      "building_id": 11,
+      "is_entrance": 1
+    },
+    {
+      "id": 12,
+      "x": 544,
+      "y": 876,
+      "building_id": 12,
+      "is_entrance": 1
+    },
+    {
+      "id": 13,
+      "x": 443,
+      "y": 774,
+      "building_id": 13,
+      "is_entrance": 1
+    },
+    {
+      "id": 14,
+      "x": 486,
+      "y": 600,
+      "building_id": 14,
+      "is_entrance": 1
+    },
+    {
+      "id": 15,
+      "x": 341,
+      "y": 600,
+      "building_id": 15,
+      "is_entrance": 1
+    },
+    {
+      "id": 16,
+      "x": 268,
+      "y": 701,
+      "building_id": 16,
+      "is_entrance": 1
+    },
+    {
+      "id": 17,
+      "x": 341,
+      "y": 396,
+      "building_id": 17,
+      "is_entrance": 1
+    },
+    {
+      "id": 18,
+      "x": 631,
+      "y": 542,
+      "building_id": 18,
+      "is_entrance": 1
+    },
+    {
+      "id": 19,
+      "x": 733,
+      "y": 484,
+      "building_id": 19,
+      "is_entrance": 1
+    },
+    {
+      "id": 20,
+      "x": 810,
+      "y": 46,
+      "building_id": 20,
+      "is_entrance": 1
+    }
+  ],
+  "roads": [
+    {
+      "id": 1,
+      "name": "小北门→风雨操场",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        1,
+        2
+      ],
+      "points": [
+        {
+          "x": 428,
+          "y": 222
+        },
+        {
+          "x": 515,
+          "y": 266
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "风雨操场→研究生综合楼",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        2,
+        17
+      ],
+      "points": [
+        {
+          "x": 515,
+          "y": 266
+        },
+        {
+          "x": 341,
+          "y": 396
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "风雨操场→篮球场",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        2,
+        3
+      ],
+      "points": [
+        {
+          "x": 515,
+          "y": 266
+        },
+        {
+          "x": 617,
+          "y": 251
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "篮球场→田径场",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        3,
+        4
+      ],
+      "points": [
+        {
+          "x": 617,
+          "y": 251
+        },
+        {
+          "x": 704,
+          "y": 207
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "田径场→13栋公寓",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        4,
+        5
+      ],
+      "points": [
+        {
+          "x": 704,
+          "y": 207
+        },
+        {
+          "x": 864,
+          "y": 48
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "13栋公寓→游泳馆",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        5,
+        6
+      ],
+      "points": [
+        {
+          "x": 864,
+          "y": 48
+        },
+        {
+          "x": 878,
+          "y": 237
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "游泳馆→主教学楼",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        6,
+        7
+      ],
+      "points": [
+        {
+          "x": 878,
+          "y": 237
+        },
+        {
+          "x": 878,
+          "y": 484
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "主教学楼→3栋教学楼",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        7,
+        8
+      ],
+      "points": [
+        {
+          "x": 878,
+          "y": 484
+        },
+        {
+          "x": 806,
+          "y": 760
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "主教学楼→轻工业博物馆",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        7,
+        19
+      ],
+      "points": [
+        {
+          "x": 878,
+          "y": 484
+        },
+        {
+          "x": 733,
+          "y": 484
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "3栋教学楼→人文楼",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        8,
+        9
+      ],
+      "points": [
+        {
+          "x": 806,
+          "y": 760
+        },
+        {
+          "x": 762,
+          "y": 876
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "人文楼→阿尔斯特学院",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        9,
+        10
+      ],
+      "points": [
+        {
+          "x": 762,
+          "y": 876
+        },
+        {
+          "x": 864,
+          "y": 890
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "人文楼→南门",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        9,
+        11
+      ],
+      "points": [
+        {
+          "x": 762,
+          "y": 876
+        },
+        {
+          "x": 690,
+          "y": 963
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "南门→行政楼",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        11,
+        12
+      ],
+      "points": [
+        {
+          "x": 690,
+          "y": 963
+        },
+        {
+          "x": 544,
+          "y": 876
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "行政楼→轻工与化工学院",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        12,
+        13
+      ],
+      "points": [
+        {
+          "x": 544,
+          "y": 876
+        },
+        {
+          "x": 443,
+          "y": 774
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "轻工与化工学院→实验楼",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        13,
+        14
+      ],
+      "points": [
+        {
+          "x": 443,
+          "y": 774
+        },
+        {
+          "x": 486,
+          "y": 600
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "实验楼→实训楼",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        14,
+        15
+      ],
+      "points": [
+        {
+          "x": 486,
+          "y": 600
+        },
+        {
+          "x": 341,
+          "y": 600
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "实训楼→西门",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        15,
+        16
+      ],
+      "points": [
+        {
+          "x": 341,
+          "y": 600
+        },
+        {
+          "x": 268,
+          "y": 701
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "name": "实训楼→研究生综合楼",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        15,
+        17
+      ],
+      "points": [
+        {
+          "x": 341,
+          "y": 600
+        },
+        {
+          "x": 341,
+          "y": 396
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "name": "实验楼→图书馆",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        14,
+        18
+      ],
+      "points": [
+        {
+          "x": 486,
+          "y": 600
+        },
+        {
+          "x": 631,
+          "y": 542
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "name": "图书馆→篮球场",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        18,
+        3
+      ],
+      "points": [
+        {
+          "x": 631,
+          "y": 542
+        },
+        {
+          "x": 617,
+          "y": 251
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "name": "图书馆→轻工业博物馆",
+      "type": "road",
+      "weight_factor": 1,
+      "node_ids": [
+        18,
+        19
+      ],
+      "points": [
+        {
+          "x": 631,
+          "y": 542
+        },
+        {
+          "x": 733,
+          "y": 484
+        }
+      ]
+    }
+  ]
+}

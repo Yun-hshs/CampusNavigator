@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c//**)",
+      "Bash(C:/Qt/6.10.2/mingw_64/bin/qmake.exe ../../CampusNavigator.pro)",
+      "Bash(make -j8)",
+      "Read(//c/Qt/**)",
+      "Bash(ls -d /c/Qt*)",
+      "Bash(ls -d /d/Qt*)",
+      "Bash(ls -d /e/Qt*)",
+      "Read(//c/Program Files/**)",
+      "Bash(\"D:/QT/6.10.2/mingw_64/bin/qmake.exe\" ../../CampusNavigator.pro -spec win32-g++ \"CONFIG+=debug\")",
+      "Bash(\"D:/QT/6.10.2/mingw_64/bin/mingw32-make.exe\" -j8)",
+      "Bash(mount)",
+      "Read(//d/QT/Tools/**)",
+      "Read(//d/QT/Tools//**)",
+      "Bash(export PATH=\"/d/QT/6.10.2/mingw_64/bin:/d/QT/Tools/mingw1310_64/bin:$PATH\")",
+      "Bash(qmake.exe ../../CampusNavigator.pro -spec win32-g++ \"CONFIG+=debug\")",
+      "Bash(mingw32-make.exe -j8)",
+      "Bash(cp ../../campus_map.json debug/campus_map.json)",
+      "Bash(cp ../../campus_map.json release/campus_map.json)",
+      "Bash(mingw32-make.exe -f Makefile.Release -j8)",
+      "Bash(taskkill //f //im CampusNavigator.exe)",
+      "Bash(mingw32-make.exe -f Makefile.Release clean)",
+      "Bash(C:/Qt/Tools/mingw1420_64/bin/mingw32-make.exe --version)",
+      "Bash(python3 -c \"from PIL import Image; img=Image.open\\(r'C:/Users/a1800/Documents/CampusNavigator/assets/campus_map.png.png'\\); print\\(f'Size: {img.size}'\\)\")",
+      "Bash(python -c \"from PIL import Image; img=Image.open\\(r'C:/Users/a1800/Documents/CampusNavigator/assets/campus_map.png.png'\\); print\\(f'Size: {img.size}'\\)\")",
+      "Bash(/c/Users/a1800/AppData/Local/Microsoft/WindowsApps/python.exe *)",
+      "Bash(xxd -l 50 -g 1 \"C:/Users/a1800/Documents/CampusNavigator/assets/campus_map.png.png\")",
+      "Bash(perl *)",
+      "Bash(/c/Program Files/nodejs/node *)",
+      "terminal:*"
+    ]
+  },
+  "terminal": {
+    "command": "powershell.exe",
+    "args": ["-NoLogo", "-NoProfile", "-NonInteractive", "-Command"]
+  },
+  "auto-run-commands": false
+}
