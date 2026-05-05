@@ -1,27 +1,26 @@
 #pragma once
 #include <QGraphicsView>
 #include <QGraphicsObject>
-#include <QGraphicsDropShadowEffect>
 #include <QMap>
+#include <QPixmap>
+#include <QVector>
 #include <QTimer>
 #include "data/GeoTransform.h"
 #include "view/LabelManager.h"
 
 class QGraphicsScene;
-class QGraphicsPathItem;
-class QSequentialAnimationGroup;
 class Graph;
+class PathVisualizer;
 
-// ── 3D Isometric Building ────────────────────────────────────────────────
+// ── 2.5D Isometric Building (pixmap-based) ─────────────────────────────────
 
 class IsometricBuilding : public QGraphicsObject {
     Q_OBJECT
     Q_PROPERTY(QPointF pos READ pos WRITE setPos)
 public:
     explicit IsometricBuilding(int nodeId, const QString& name,
-                               qreal w, qreal h, qreal depth,
-                               const QColor& wallColor,
-                               const QColor& roofColor,
+                               const QPixmap& basePixmap,
+                               const QPixmap& overlayPixmap,
                                QGraphicsItem* parent = nullptr);
 
     QRectF boundingRect() const override;
@@ -39,46 +38,13 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
 private:
-    void drawWindows(QPainter* painter, const QPolygonF& face,
-                     int rows, int cols, bool isLeft);
-    void drawRoofEdge(QPainter* painter);
-
     int m_nodeId;
     QString m_name;
-    qreal m_w, m_h, m_depth;
-    QColor m_wallColor, m_roofColor;
+    QPixmap m_basePixmap;
+    QPixmap m_overlayPixmap;
     bool m_highlighted = false;
     QColor m_hlColor;
     bool m_hovered = false;
-};
-
-// ── Isometric Tree ───────────────────────────────────────────────────────
-
-class IsometricTree : public QGraphicsObject {
-public:
-    explicit IsometricTree(qreal size, int style = 0,
-                           QGraphicsItem* parent = nullptr);
-    QRectF boundingRect() const override;
-    void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*) override;
-private:
-    qreal m_size;
-    int m_style;
-};
-
-// ── Animated ball ────────────────────────────────────────────────────────
-
-class AnimBall : public QGraphicsObject {
-    Q_OBJECT
-    Q_PROPERTY(QPointF pos READ pos WRITE setPos)
-public:
-    explicit AnimBall(qreal radius, const QColor& color,
-                      QGraphicsItem* parent = nullptr);
-    QRectF boundingRect() const override;
-    void paint(QPainter* painter, const QStyleOptionGraphicsItem*,
-               QWidget*) override;
-private:
-    qreal  m_radius;
-    QColor m_color;
 };
 
 // ── MapView ──────────────────────────────────────────────────────────────
@@ -105,6 +71,8 @@ public:
     void zoomOut();
     void fitMap();
 
+    QPointF iso(qreal x, qreal y) const;
+
 signals:
     void nodeClicked(int id);
 
@@ -113,18 +81,8 @@ protected:
 
 private:
     void setupScene();
-
-    // Isometric helpers
-    QPointF iso(qreal x, qreal y) const;
-    qreal depthSort(qreal x, qreal y) const;
+    void initPixmaps();
     void drawGround();
-    void drawGrassPatches();
-    void drawAreas();
-    void drawRoads();
-    void drawBuildings();
-    void drawTrees();
-    void drawShadows();
-    void resetBuildingStyle(int id);
     void updateLabelsAndLOD();
 
     QGraphicsScene* m_scene = nullptr;
@@ -132,33 +90,18 @@ private:
 
     QMap<int, IsometricBuilding*> m_buildings;
     LabelManager* m_labelMgr = nullptr;
+    PathVisualizer* m_pathViz = nullptr;
 
-    // Path state
-    QVector<int>                  m_pathIds;
-    QVector<QGraphicsPathItem*>   m_pathItems;
-    int m_startNodeId = -1;
-    int m_endNodeId   = -1;
-    AnimBall*                   m_ball      = nullptr;
-    QSequentialAnimationGroup*  m_animGroup = nullptr;
+    QMap<QString, QPixmap> m_pixCache;
 
-    // Marching ants animation
-    QTimer*        m_antsTimer   = nullptr;
-    qreal          m_antsOffset  = 0;
-    QGraphicsPathItem* m_antsItem = nullptr;
-
-    // Non-focus mask
-    QGraphicsPathItem* m_maskItem = nullptr;
-
-    // Isometric projection parameters
-    static constexpr double SX = 0.866;          // cos(30°)
-    static constexpr double SY = 0.5;            // sin(30°)
-    static constexpr double SCALE = 0.5;         // overall scale
-
-    // Coordinate transformation
     GeoTransform m_geo;
-    double m_logicScale = 0.3;  // 逻辑坐标单位 → 米 的比例因子
+    double m_logicScale = 0.3;
     static constexpr double ZOOM_FACTOR = 1.15;
     static constexpr double MIN_SCALE   = 0.05;
     static constexpr double MAX_SCALE   = 8.0;
     static constexpr double BALL_RADIUS = 8.0;
+
+    // LOD debounce
+    qreal m_lastLabelZoom = -1;
+    QTimer* m_lodTimer = nullptr;
 };

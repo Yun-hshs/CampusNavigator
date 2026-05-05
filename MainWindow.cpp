@@ -10,6 +10,7 @@
 #include <QFrame>
 #include <QGraphicsDropShadowEffect>
 #include <QTimer>
+#include <QStringListModel>
 #include <QtMath>
 
 MainWindow::MainWindow(QWidget* parent)
@@ -236,6 +237,22 @@ void MainWindow::loadMapData() {
         m_startCombo->addItem(n.name, n.id);
         m_endCombo->addItem(n.name, n.id);
     }
+
+    // Setup search completer with real-time suggestions
+    QStringList names;
+    for (const auto& n : m_graph.allNodes())
+        names << n.name;
+    auto* model = new QStringListModel(names, m_completer);
+    m_completer = new QCompleter(model, this);
+    m_completer->setCaseSensitivity(Qt::CaseInsensitive);
+    m_completer->setFilterMode(Qt::MatchContains);
+    m_completer->setCompletionMode(QCompleter::PopupCompletion);
+    m_searchEdit->setCompleter(m_completer);
+    connect(m_completer, QOverload<const QString&>::of(&QCompleter::activated),
+            this, [this](const QString& text) {
+        m_searchEdit->setText(text);
+        onSearchReturn();
+    });
 
     statusBar()->showMessage(
         QString("已加载 %1 个节点").arg(m_graph.nodeCount()), 4000);

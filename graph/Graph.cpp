@@ -2,8 +2,9 @@
 #include <QtMath>
 
 void Graph::addNode(int id, const QString& name, double x, double y,
-                    const QString& description, const QString& type) {
-    m_nodes[id] = {id, name, x, y, description, type};
+                    const QString& description, const QString& type,
+                    const QString& sprite) {
+    m_nodes[id] = {id, name, x, y, description, type, sprite};
 }
 
 void Graph::addEdge(int from, int to, double weight, const QString& type) {

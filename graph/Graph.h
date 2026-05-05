@@ -11,6 +11,7 @@ struct Node {
     double y;
     QString description;
     QString type = "building";  // "building" or "decoration"
+    QString sprite = "default"; // pixmap key for rendering
 };
 
 struct Edge {
@@ -32,7 +33,8 @@ class Graph {
 public:
     void addNode(int id, const QString& name, double x, double y,
                  const QString& description = QString(),
-                 const QString& type = "building");
+                 const QString& type = "building",
+                 const QString& sprite = "default");
     void addEdge(int from, int to, double weight,
                  const QString& type = "main_road");
     void addArea(int id, const QString& name, const QString& type,

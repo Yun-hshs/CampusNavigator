@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/d/Qt/6.10.2/mingw_64/bin/qmake.exe CampusNavigator.pro -spec win32-g++)"
+    ]
+  }
+}

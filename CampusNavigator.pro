@@ -11,6 +11,9 @@ SOURCES += \
     main.cpp \
     MainWindow.cpp \
     view/MapView.cpp \
+    view/RoadRenderer.cpp \
+    view/AreaRenderer.cpp \
+    view/PathVisualizer.cpp \
     graph/Graph.cpp \
     algorithm/Dijkstra.cpp \
     data/DataLoader.cpp
@@ -19,6 +22,10 @@ HEADERS += \
     MainWindow.h \
     view/MapView.h \
     view/LabelManager.h \
+    view/RenderContext.h \
+    view/RoadRenderer.h \
+    view/AreaRenderer.h \
+    view/PathVisualizer.h \
     graph/Graph.h \
     algorithm/Dijkstra.h \
     data/DataLoader.h \

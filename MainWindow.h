@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QDockWidget>
 #include <QFrame>
+#include <QCompleter>
 #include "graph/Graph.h"
 
 class MapView;
@@ -39,6 +40,7 @@ private:
     int m_clickCount = 0;
 
     QLineEdit*   m_searchEdit  = nullptr;
+    QCompleter*  m_completer   = nullptr;
     QComboBox*   m_startCombo  = nullptr;
     QComboBox*   m_endCombo    = nullptr;
     QComboBox*   m_modeCombo   = nullptr;
