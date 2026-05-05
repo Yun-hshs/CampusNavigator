@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 QT       += core gui sql network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -84,3 +85,47 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+=======
+QT += core gui widgets
+
+TARGET   = CampusNavigator
+TEMPLATE = app
+
+CONFIG += c++17
+
+INCLUDEPATH += $$PWD
+
+SOURCES += \
+    main.cpp \
+    MainWindow.cpp \
+    view/MapView.cpp \
+    view/RoadRenderer.cpp \
+    view/AreaRenderer.cpp \
+    view/PathVisualizer.cpp \
+    graph/Graph.cpp \
+    algorithm/Dijkstra.cpp \
+    data/DataLoader.cpp
+
+HEADERS += \
+    MainWindow.h \
+    view/MapView.h \
+    view/LabelManager.h \
+    view/RenderContext.h \
+    view/RoadRenderer.h \
+    view/AreaRenderer.h \
+    view/PathVisualizer.h \
+    graph/Graph.h \
+    algorithm/Dijkstra.h \
+    data/DataLoader.h \
+    data/GeoTransform.h
+
+# Copy data directory to output so the app finds map.json at runtime
+CONFIG(release, debug|release) {
+    QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$shell_path($$PWD/data) $$shell_path($$OUT_PWD/release/data)
+} else {
+    QMAKE_POST_LINK += $$QMAKE_COPY_DIR $$shell_path($$PWD/data) $$shell_path($$OUT_PWD/debug/data)
+}
+
+RESOURCES += \
+    res.qrc
+>>>>>>> 3c622ba37ffedd0d62becfb725a35e808fed2dfd

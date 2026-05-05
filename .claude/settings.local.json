@@ -1,6 +1,7 @@
 {
   "permissions": {
     "allow": [
+<<<<<<< HEAD
       "Read(//c//**)",
       "Bash(C:/Qt/6.10.2/mingw_64/bin/qmake.exe ../../CampusNavigator.pro)",
       "Bash(make -j8)",
@@ -38,3 +39,9 @@
   },
   "auto-run-commands": false
 }
+=======
+      "Bash(/d/Qt/6.10.2/mingw_64/bin/qmake.exe CampusNavigator.pro -spec win32-g++)"
+    ]
+  }
+}
+>>>>>>> 3c622ba37ffedd0d62becfb725a35e808fed2dfd

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "mainwindow.h"
 
 #include <QApplication>
@@ -20,4 +21,18 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
     return a.exec();
+=======
+#include <QApplication>
+#include "MainWindow.h"
+
+int main(int argc, char* argv[]) {
+    QApplication app(argc, argv);
+    app.setApplicationName("CampusNavigator");
+    app.setApplicationDisplayName("校园导航系统");
+
+    MainWindow w;
+    w.show();
+
+    return app.exec();
+>>>>>>> 3c622ba37ffedd0d62becfb725a35e808fed2dfd
 }
