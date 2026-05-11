@@ -1,0 +1,10 @@
+<view class="container">
+  <view class="search card">🔍 搜索教学楼 / 食堂 / 办公室</view>
+  <view class="map card">地图占位（后续接入 map 或自定义渲染）</view>
+  <view class="quick-actions">
+    <view class="quick card">去教学楼</view>
+    <view class="quick card">去食堂</view>
+    <view class="quick card">找厕所</view>
+    <view class="quick card">找停车位</view>
+  </view>
+</view>
