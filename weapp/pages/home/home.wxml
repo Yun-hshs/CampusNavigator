@@ -1,10 +1,21 @@
 <view class="container">
-  <view class="search card">🔍 搜索教学楼 / 食堂 / 办公室</view>
+  <search-bar placeholder="搜索教学楼 / 食堂 / 办公室"
+    value="{{keyword}}" showState="{{true}}"
+    searching="{{searching}}" empty="{{!results.length}}"
+    bind:input="onSearchInput" bind:clear="onClearSearch" />
+
+  <view wx:if="{{results.length}}" class="results card">
+    <poi-card wx:for="{{results}}" wx:key="id"
+      id="{{item.id}}" name="{{item.name}}" type="{{item.type}}"
+      bind:tap="onTapPoi" />
+  </view>
+
   <view class="map card">地图占位（后续接入 map 或自定义渲染）</view>
+
   <view class="quick-actions">
-    <view class="quick card">去教学楼</view>
-    <view class="quick card">去食堂</view>
-    <view class="quick card">找厕所</view>
-    <view class="quick card">找停车位</view>
+    <view class="quick card" data-keyword="教学楼" bindtap="onQuickAction">去教学楼</view>
+    <view class="quick card" data-keyword="食堂" bindtap="onQuickAction">去食堂</view>
+    <view class="quick card" data-keyword="厕所" bindtap="onQuickAction">找厕所</view>
+    <view class="quick card" data-keyword="停车场" bindtap="onQuickAction">找停车位</view>
   </view>
 </view>

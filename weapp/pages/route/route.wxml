@@ -1,4 +1,63 @@
 <view class="container">
-  <view class="card panel">起点 / 终点 / 策略（最短距离、最少时间）</view>
-  <view class="card result">路线结果区域（总距离、预计时长、分段指引）</view>
+  <!-- 起终点选择 -->
+  <view class="card panel">
+    <view class="endpoint" data-target="start" bindtap="openSearch">
+      <view class="dot green"></view>
+      <view class="ep-text {{startName ? '' : 'placeholder'}}">
+        {{startName || '选择起点'}}
+      </view>
+    </view>
+    <view class="divider"></view>
+    <view class="endpoint" data-target="end" bindtap="openSearch">
+      <view class="dot red"></view>
+      <view class="ep-text {{endName ? '' : 'placeholder'}}">
+        {{endName || '选择终点'}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 出行方式 -->
+  <view class="mode-bar card">
+    <view wx:for="{{modes}}" wx:key="value"
+      class="mode-item {{mode === item.value ? 'active' : ''}}"
+      data-mode="{{item.value}}" bindtap="onModeChange">
+      <text class="mode-icon">{{item.icon}}</text>
+      <text>{{item.label}}</text>
+    </view>
+  </view>
+
+  <!-- 规划按钮 -->
+  <button class="primary plan-btn" bindtap="onPlanRoute"
+    disabled="{{!startId || !endId || loading}}">
+    {{loading ? '规划中…' : '开始导航'}}
+  </button>
+
+  <!-- 错误提示 -->
+  <view wx:if="{{error}}" class="error-hint">{{error}}</view>
+
+  <!-- 路线结果 -->
+  <route-card wx:if="{{route}}"
+    distance="{{route.distance}}" duration="{{route.duration}}"
+    steps="{{route.steps}}" />
+</view>
+
+<!-- 搜索弹窗 -->
+<view wx:if="{{showSearch}}" class="search-modal" catchtap="onCloseSearch">
+  <view class="search-sheet" catchtap="">
+    <view class="sheet-header">
+      <view class="sheet-input-wrap">
+        <search-bar placeholder="搜索地点"
+          value="{{searchKeyword}}" focus="{{true}}"
+          searching="{{searching}}" empty="{{!searchResults.length}}"
+          showState="{{true}}"
+          bind:input="onSearchInput" bind:clear="onClearSearch" />
+      </view>
+      <view class="sheet-close" bindtap="onCloseSearch">取消</view>
+    </view>
+    <scroll-view scroll-y class="sheet-list">
+      <poi-card wx:for="{{searchResults}}" wx:key="id"
+        id="{{item.id}}" name="{{item.name}}" type="{{item.type}}"
+        bind:tap="onSelectPoi" />
+    </scroll-view>
+  </view>
 </view>

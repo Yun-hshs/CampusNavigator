@@ -1,0 +1,27 @@
+.poi-card {
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+.poi-card:last-child { border-bottom: none; }
+.poi-card:active { background: #f9f9f9; }
+
+.poi-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.poi-name { font-size: 30rpx; color: #1f1f1f; }
+.poi-type {
+  font-size: 22rpx;
+  color: #1677ff;
+  background: #e6f4ff;
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+  flex-shrink: 0;
+  margin-left: 16rpx;
+}
+.poi-desc {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+}

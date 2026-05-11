@@ -1,0 +1,18 @@
+<view class="route-card card">
+  <view class="route-summary">
+    <view class="summary-item">
+      <view class="summary-value">{{distance}}</view>
+      <view class="summary-label">总距离</view>
+    </view>
+    <view class="summary-item">
+      <view class="summary-value">{{duration}}</view>
+      <view class="summary-label">预计时间</view>
+    </view>
+  </view>
+  <view wx:if="{{steps.length}}" class="route-steps">
+    <view wx:for="{{steps}}" wx:key="index" class="step-item">
+      <view class="step-index">{{index + 1}}</view>
+      <view class="step-text">{{item.instruction}}</view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,7 @@
+<view class="poi-card" bindtap="onTap">
+  <view class="poi-main">
+    <view class="poi-name">{{name}}</view>
+    <view wx:if="{{type}}" class="poi-type">{{type}}</view>
+  </view>
+  <view wx:if="{{desc}}" class="poi-desc">{{desc}}</view>
+</view>

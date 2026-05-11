@@ -1,4 +1,26 @@
-.search { padding: 20rpx; margin-bottom: 20rpx; color: #8c8c8c; }
-.map { height: 760rpx; padding: 24rpx; margin-bottom: 20rpx; }
-.quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 16rpx; }
-.quick { padding: 24rpx; text-align: center; }
+.results {
+  margin-bottom: 20rpx;
+  max-height: 480rpx;
+  overflow-y: auto;
+}
+
+.map {
+  height: 760rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #bbb;
+}
+
+.quick-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16rpx;
+}
+.quick {
+  padding: 24rpx;
+  text-align: center;
+  font-size: 28rpx;
+}

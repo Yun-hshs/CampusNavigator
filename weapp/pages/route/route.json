@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "search-bar": "/components/search-bar/search-bar",
+    "poi-card": "/components/poi-card/poi-card",
+    "route-card": "/components/route-card/route-card"
+  }
+}

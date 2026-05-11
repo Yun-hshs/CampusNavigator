@@ -1,0 +1,8 @@
+<view class="search-bar card">
+  <input class="search-input" placeholder="{{placeholder}}"
+    value="{{value}}" focus="{{focus}}"
+    bindinput="onInput" bindconfirm="onConfirm" confirm-type="search" />
+  <view wx:if="{{value}}" class="search-clear" bindtap="onClear">✕</view>
+</view>
+<view wx:if="{{showState && searching}}" class="search-hint">搜索中…</view>
+<view wx:elif="{{showState && value && empty}}" class="search-hint">未找到相关地点</view>
