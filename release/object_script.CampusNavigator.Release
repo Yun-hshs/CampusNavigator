@@ -1,5 +1,5 @@
 release/main.o
-release/MainWindow.o
+release/mainwindow.o
 release/MapView.o
 release/RoadRenderer.o
 release/AreaRenderer.o
@@ -8,6 +8,6 @@ release/Graph.o
 release/Dijkstra.o
 release/DataLoader.o
 release/qrc_res.o
-release/moc_MainWindow.o
+release/moc_mainwindow.o
 release/moc_MapView.o
 release/moc_PathVisualizer.o

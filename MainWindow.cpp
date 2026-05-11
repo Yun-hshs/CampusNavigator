@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include "view/MapView.h"
+#include "view/RenderContext.h"
 #include "data/DataLoader.h"
 #include "algorithm/Dijkstra.h"
 #include <QToolBar>
@@ -151,6 +152,28 @@ void MainWindow::setupToolBar() {
     tb->addWidget(zoomInBtn);
     tb->addWidget(zoomOutBtn);
     tb->addWidget(fitBtn);
+    tb->addSeparator();
+
+    m_viewModeBtn = new QPushButton("2D");
+    m_viewModeBtn->setCheckable(true);
+    m_viewModeBtn->setFixedSize(50, 30);
+    m_viewModeBtn->setToolTip("切换 2D/等轴测视图");
+    m_viewModeBtn->setStyleSheet(
+        "QPushButton { border: 1px solid #ccc; border-radius: 5px;"
+        " background: #f0f2f5; font-size: 12px; font-weight: bold;"
+        " color: #444; }"
+        "QPushButton:checked { background: #3A7BD5; color: white;"
+        " border-color: #3A7BD5; }");
+    connect(m_viewModeBtn, &QPushButton::clicked, this, [this]() {
+        if (m_viewModeBtn->isChecked()) {
+            m_mapView->setRenderMode(RenderMode::Flat2D);
+            m_viewModeBtn->setText("3D");
+        } else {
+            m_mapView->setRenderMode(RenderMode::Isometric);
+            m_viewModeBtn->setText("2D");
+        }
+    });
+    tb->addWidget(m_viewModeBtn);
 }
 
 void MainWindow::setupInfoPanel() {

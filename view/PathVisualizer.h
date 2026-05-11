@@ -8,6 +8,7 @@
 class QTimer;
 class QSequentialAnimationGroup;
 class IsometricBuilding;
+class VectorBuilding;
 
 // ── Animated ball ────────────────────────────────────────────────────────
 
@@ -37,7 +38,8 @@ public:
     void animatePath(const RenderContext& ctx, const QVector<int>& path,
                      qreal ballRadius);
     void clearPath(QGraphicsScene* scene,
-                   const QMap<int, IsometricBuilding*>& buildings);
+                   const QMap<int, IsometricBuilding*>& isoBuildings,
+                   const QMap<int, VectorBuilding*>& vecBuildings);
 
     bool hasPath() const { return !m_pathIds.isEmpty(); }
     int startNodeId() const { return m_startNodeId; }

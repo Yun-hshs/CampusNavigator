@@ -11,6 +11,26 @@ void AreaRenderer::draw(const RenderContext& ctx) {
     const auto areas = ctx.graph->allAreas();
     if (areas.isEmpty()) return;
 
+    // ── Flat 2D mode: simple colored polygons ──
+    if (ctx.mode == RenderMode::Flat2D) {
+        for (const auto& area : areas) {
+            QPolygonF screenPoly;
+            for (const QPointF& pt : area.polygon)
+                screenPoly << ctx.iso(pt.x(), pt.y());
+
+            QColor fill;
+            if (area.type == "plaza")             fill = QColor(220, 218, 210, 200);
+            else if (area.type == "sports_field") fill = QColor(90, 160, 80, 200);
+            else if (area.type == "garden")       fill = QColor(120, 180, 100, 180);
+            else                                  fill = QColor(180, 200, 220, 180);
+
+            auto* item = ctx.scene->addPolygon(screenPoly,
+                QPen(fill.darker(120), 1), QBrush(fill));
+            item->setZValue(area.zOrder);
+        }
+        return;
+    }
+
     for (const auto& area : areas) {
         QPolygonF screenPoly;
         for (const QPointF& pt : area.polygon)

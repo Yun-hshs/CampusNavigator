@@ -7,6 +7,7 @@
 #include <QTimer>
 #include "data/GeoTransform.h"
 #include "view/LabelManager.h"
+#include "view/RenderContext.h"
 
 class QGraphicsScene;
 class Graph;
@@ -47,6 +48,37 @@ private:
     bool m_hovered = false;
 };
 
+// ── 2D Vector Building (shape-based) ─────────────────────────────────────
+
+class VectorBuilding : public QGraphicsObject {
+    Q_OBJECT
+    Q_PROPERTY(QPointF pos READ pos WRITE setPos)
+public:
+    explicit VectorBuilding(int nodeId, const QString& name,
+                            QGraphicsItem* parent = nullptr);
+
+    QRectF boundingRect() const override;
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*) override;
+
+    void setHighlighted(bool on, const QColor& color = QColor());
+    int nodeId() const { return m_nodeId; }
+
+signals:
+    void clicked(int nodeId);
+
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
+
+private:
+    int m_nodeId;
+    QString m_name;
+    bool m_highlighted = false;
+    QColor m_hlColor;
+    bool m_hovered = false;
+};
+
 // ── MapView ──────────────────────────────────────────────────────────────
 
 class MapView : public QGraphicsView {
@@ -67,6 +99,9 @@ public:
 
     QPointF nodeScreenPos(int id) const;
 
+    void setRenderMode(RenderMode mode);
+    RenderMode renderMode() const { return m_renderMode; }
+
     void zoomIn();
     void zoomOut();
     void fitMap();
@@ -82,7 +117,6 @@ protected:
 private:
     void setupScene();
     void initPixmaps();
-    void drawGround();
     bool drawRealMapBackground(double minX, double minY, double maxX, double maxY);
     void updateLabelsAndLOD();
 
@@ -90,12 +124,14 @@ private:
     Graph* m_graph = nullptr;
 
     QMap<int, IsometricBuilding*> m_buildings;
+    QMap<int, VectorBuilding*> m_vectorBuildings;
     LabelManager* m_labelMgr = nullptr;
     PathVisualizer* m_pathViz = nullptr;
 
     QMap<QString, QPixmap> m_pixCache;
 
     GeoTransform m_geo;
+    RenderMode m_renderMode = RenderMode::Isometric;
     double m_logicScale = 0.3;
     static constexpr double ZOOM_FACTOR = 1.15;
     static constexpr double MIN_SCALE   = 0.05;

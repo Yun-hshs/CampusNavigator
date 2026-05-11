@@ -91,6 +91,33 @@ void PathVisualizer::drawPath(const RenderContext& ctx,
     Q_UNUSED(ballRadius);
     if (path.size() < 2 || !ctx.graph) return;
 
+    // ── Flat 2D mode: simple straight-line path ──
+    if (ctx.mode == RenderMode::Flat2D) {
+        QPainterPath linePath;
+        QPointF p0 = ctx.iso(ctx.graph->node(path.first()).x,
+                             ctx.graph->node(path.first()).y);
+        linePath.moveTo(p0);
+        for (int i = 1; i < path.size(); ++i) {
+            const Node& n = ctx.graph->node(path[i]);
+            linePath.lineTo(ctx.iso(n.x, n.y));
+        }
+
+        // Shadow
+        QPen sp(QColor(200, 50, 30, 60), 10);
+        sp.setCapStyle(Qt::RoundCap); sp.setJoinStyle(Qt::RoundJoin);
+        auto* l1 = ctx.scene->addPath(linePath, sp);
+        l1->setZValue(30); m_pathItems.append(l1);
+
+        // Main
+        QPen mp(QColor(230, 50, 30), 4);
+        mp.setCapStyle(Qt::RoundCap); mp.setJoinStyle(Qt::RoundJoin);
+        auto* l2 = ctx.scene->addPath(linePath, mp);
+        l2->setZValue(32); m_pathItems.append(l2);
+
+        for (int id : path) m_pathIds.append(id);
+        return;
+    }
+
     double maxW = 0;
     for (int i = 0; i + 1 < path.size(); ++i) {
         for (const auto& e : ctx.graph->getEdges(path[i])) {
@@ -216,24 +243,33 @@ void PathVisualizer::animatePath(const RenderContext& ctx,
         QPointF pa = ctx.iso(a.x, a.y);
         QPointF pb = ctx.iso(b.x, b.y);
 
-        double w = 100;
-        for (const auto& e : ctx.graph->getEdges(path[i])) {
-            if (e.to == path[i + 1]) { w = e.weight; break; }
-        }
-        double maxW = 1;
-        for (int j = 0; j + 1 < path.size(); ++j)
-            for (const auto& e : ctx.graph->getEdges(path[j]))
-                if (e.to == path[j + 1]) maxW = qMax(maxW, e.weight);
+        if (ctx.mode == RenderMode::Flat2D) {
+            // Linear interpolation for 2D mode
+            int samples = 10;
+            for (int s = 1; s <= samples; ++s) {
+                qreal t = static_cast<qreal>(s) / samples;
+                waypoints.append(pa + t * (pb - pa));
+            }
+        } else {
+            double w = 100;
+            for (const auto& e : ctx.graph->getEdges(path[i])) {
+                if (e.to == path[i + 1]) { w = e.weight; break; }
+            }
+            double maxW = 1;
+            for (int j = 0; j + 1 < path.size(); ++j)
+                for (const auto& e : ctx.graph->getEdges(path[j]))
+                    if (e.to == path[j + 1]) maxW = qMax(maxW, e.weight);
 
-        QPointF cpLogic = bezierControlPoint(a, b, w, maxW);
-        QPointF cp = ctx.iso(cpLogic.x(), cpLogic.y());
+            QPointF cpLogic = bezierControlPoint(a, b, w, maxW);
+            QPointF cp = ctx.iso(cpLogic.x(), cpLogic.y());
 
-        int samples = 10;
-        for (int s = 1; s <= samples; ++s) {
-            qreal t = static_cast<qreal>(s) / samples;
-            qreal u = 1.0 - t;
-            QPointF pt = u * u * pa + 2 * u * t * cp + t * t * pb;
-            waypoints.append(pt);
+            int samples = 10;
+            for (int s = 1; s <= samples; ++s) {
+                qreal t = static_cast<qreal>(s) / samples;
+                qreal u = 1.0 - t;
+                QPointF pt = u * u * pa + 2 * u * t * cp + t * t * pb;
+                waypoints.append(pt);
+            }
         }
     }
 
@@ -254,7 +290,8 @@ void PathVisualizer::animatePath(const RenderContext& ctx,
 }
 
 void PathVisualizer::clearPath(QGraphicsScene* scene,
-                               const QMap<int, IsometricBuilding*>& buildings) {
+                               const QMap<int, IsometricBuilding*>& isoBuildings,
+                               const QMap<int, VectorBuilding*>& vecBuildings) {
     if (m_antsTimer) { m_antsTimer->stop(); }
     m_antsItem = nullptr;
 
@@ -263,15 +300,19 @@ void PathVisualizer::clearPath(QGraphicsScene* scene,
     for (auto* item : m_pathItems) { scene->removeItem(item); delete item; }
     m_pathItems.clear();
     m_maskItem = nullptr;
-    for (int id : m_pathIds)
-        if (auto* b = buildings.value(id)) b->setHighlighted(false);
+    for (int id : m_pathIds) {
+        if (auto* b = isoBuildings.value(id)) b->setHighlighted(false);
+        if (auto* b = vecBuildings.value(id)) b->setHighlighted(false);
+    }
     m_pathIds.clear();
     if (m_startNodeId >= 0) {
-        if (auto* b = buildings.value(m_startNodeId)) b->setHighlighted(false);
+        if (auto* b = isoBuildings.value(m_startNodeId)) b->setHighlighted(false);
+        if (auto* b = vecBuildings.value(m_startNodeId)) b->setHighlighted(false);
         m_startNodeId = -1;
     }
     if (m_endNodeId >= 0) {
-        if (auto* b = buildings.value(m_endNodeId)) b->setHighlighted(false);
+        if (auto* b = isoBuildings.value(m_endNodeId)) b->setHighlighted(false);
+        if (auto* b = vecBuildings.value(m_endNodeId)) b->setHighlighted(false);
         m_endNodeId = -1;
     }
 }

@@ -56,6 +56,15 @@ public:
         m_inverted = m_matrix.inverted();
     }
 
+    /// 构建平面 2D 变换矩阵（无等轴测旋转，仅缩放，Y 轴同向：北在上）
+    void configureFlat2D(double metersPerPixel, QPointF originScreen) {
+        m_mpp = metersPerPixel;
+        m_origin = originScreen;
+        double s = 1.0 / m_mpp;
+        m_matrix = QTransform(s, 0, 0, s, m_origin.x(), m_origin.y());
+        m_inverted = m_matrix.inverted();
+    }
+
     /// 逻辑坐标 → 屏幕坐标
     QPointF toScreen(double logicX, double logicY) const {
         return m_matrix.map(QPointF(logicX, logicY));

@@ -1,7 +1,7 @@
 #include "MapView.h"
 #include "PathVisualizer.h"
 #include "RoadRenderer.h"
-#include "AreaRenderer.h"
+
 #include "RenderContext.h"
 #include "graph/Graph.h"
 
@@ -85,6 +85,66 @@ void IsometricBuilding::hoverLeaveEvent(QGraphicsSceneHoverEvent*) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// VectorBuilding — shape-based 2D building
+// ═══════════════════════════════════════════════════════════════════════════
+
+VectorBuilding::VectorBuilding(int nodeId, const QString& name,
+                               QGraphicsItem* parent)
+    : QGraphicsObject(parent), m_nodeId(nodeId), m_name(name)
+{
+    setAcceptHoverEvents(true);
+    setFlag(ItemIsSelectable);
+    setZValue(10);
+}
+
+QRectF VectorBuilding::boundingRect() const {
+    return {0, 0, 36, 28};
+}
+
+void VectorBuilding::paint(QPainter* painter,
+                           const QStyleOptionGraphicsItem*, QWidget*) {
+    QRectF r = boundingRect();
+    QColor fill = m_highlighted ? m_hlColor : QColor(100, 149, 237);
+    painter->setRenderHint(QPainter::Antialiasing);
+    painter->setPen(QPen(fill.darker(130), 1.2));
+    painter->setBrush(fill.lighter(120));
+    painter->drawRoundedRect(r, 5, 5);
+
+    QFont f("Microsoft YaHei", 7, QFont::Bold);
+    painter->setFont(f);
+    painter->setPen(Qt::white);
+    QString label = m_name.length() > 4 ? m_name.left(4) : m_name;
+    painter->drawText(r, Qt::AlignCenter, label);
+
+    if (m_hovered && !m_highlighted) {
+        painter->setPen(QPen(Qt::white, 2));
+        painter->setBrush(Qt::NoBrush);
+        painter->drawRoundedRect(r.adjusted(-1, -1, 1, 1), 5, 5);
+    }
+}
+
+void VectorBuilding::setHighlighted(bool on, const QColor& color) {
+    m_highlighted = on;
+    m_hlColor = color;
+    update();
+}
+
+void VectorBuilding::mousePressEvent(QGraphicsSceneMouseEvent* e) {
+    QGraphicsObject::mousePressEvent(e);
+    emit clicked(m_nodeId);
+}
+
+void VectorBuilding::hoverEnterEvent(QGraphicsSceneHoverEvent*) {
+    m_hovered = true;
+    update();
+}
+
+void VectorBuilding::hoverLeaveEvent(QGraphicsSceneHoverEvent*) {
+    m_hovered = false;
+    update();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // MapView — constructor & setup
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -140,6 +200,12 @@ void MapView::initPixmaps() {
 
 void MapView::setGraph(Graph* graph) { m_graph = graph; }
 
+void MapView::setRenderMode(RenderMode mode) {
+    if (m_renderMode == mode) return;
+    m_renderMode = mode;
+    drawMap();
+}
+
 QPointF MapView::iso(qreal x, qreal y) const {
     return m_geo.toScreen(x * m_logicScale, y * m_logicScale);
 }
@@ -153,6 +219,7 @@ void MapView::drawMap() {
     clearPath();
     m_scene->clear();
     m_buildings.clear();
+    m_vectorBuildings.clear();
     m_labelMgr = new LabelManager(m_scene);
 
     // Configure GeoTransform
@@ -165,22 +232,30 @@ void MapView::drawMap() {
     double logicW = (lxMax - lxMin) * m_logicScale;
     double mpp = logicW / 800.0;
     if (mpp < 0.01) mpp = 0.5;
-    m_geo.configure(mpp, QPointF(0, 0));
+
+    if (m_renderMode == RenderMode::Flat2D) {
+        // Origin places north (max logical y) at screen top, campus centered horizontally
+        double originY = lyMax * m_logicScale;
+        double originX = -logicW / 2.0;
+        m_geo.configureFlat2D(mpp, QPointF(originX, originY));
+        m_scene->setBackgroundBrush(QColor(235, 240, 230));
+    } else {
+        m_geo.configure(mpp, QPointF(0, 0));
+    }
 
     // Build render context
     RenderContext ctx;
     ctx.scene = m_scene;
     ctx.graph = m_graph;
     ctx.iso = [this](qreal x, qreal y) { return iso(x, y); };
+    ctx.mode = m_renderMode;
 
     // Draw layers
-    if (!drawRealMapBackground(lxMin, lyMin, lxMax, lyMax)) {
-        drawGround();
-    }
-    AreaRenderer::draw(ctx);
+    if (m_renderMode == RenderMode::Flat2D)
+        drawRealMapBackground(lxMin, lyMin, lxMax, lyMax);
     RoadRenderer::draw(ctx);
 
-    // Draw buildings — base + overlay, Y-sorted
+    // Draw buildings — Y-sorted
     struct Drawable { int nodeId; QPointF sp; };
     QVector<Drawable> drawables;
     for (const auto& n : nodes)
@@ -188,20 +263,36 @@ void MapView::drawMap() {
     std::sort(drawables.begin(), drawables.end(),
         [](const Drawable& a, const Drawable& b){ return a.sp.y() < b.sp.y(); });
 
-    QPixmap basePix = m_pixCache.value("default");
-    for (const auto& d : drawables) {
-        const auto& node = m_graph->node(d.nodeId);
-        QPixmap overlayPix = m_pixCache.value(node.sprite);
-        auto* bldg = new IsometricBuilding(d.nodeId, node.name, basePix, overlayPix);
-        qreal bw = bldg->boundingRect().width();
-        qreal bh = bldg->boundingRect().height();
-        bldg->setPos(d.sp.x() - bw / 2, d.sp.y() - bh);
-        bldg->setZValue(10 + d.sp.y() * 0.01);
-        m_scene->addItem(bldg);
-        m_buildings[d.nodeId] = bldg;
-        m_labelMgr->registerLabel(d.nodeId, node.name,
-            bldg->pos() + QPointF(bw / 2, -12), 1.0, bh);
-        connect(bldg, &IsometricBuilding::clicked, this, &MapView::nodeClicked);
+    if (m_renderMode == RenderMode::Isometric) {
+        QPixmap basePix = m_pixCache.value("default");
+        for (const auto& d : drawables) {
+            const auto& node = m_graph->node(d.nodeId);
+            QPixmap overlayPix = m_pixCache.value(node.sprite);
+            auto* bldg = new IsometricBuilding(d.nodeId, node.name, basePix, overlayPix);
+            qreal bw = bldg->boundingRect().width();
+            qreal bh = bldg->boundingRect().height();
+            bldg->setPos(d.sp.x() - bw / 2, d.sp.y() - bh);
+            bldg->setZValue(10 + d.sp.y() * 0.01);
+            m_scene->addItem(bldg);
+            m_buildings[d.nodeId] = bldg;
+            m_labelMgr->registerLabel(d.nodeId, node.name,
+                bldg->pos() + QPointF(bw / 2, -12), 1.0, bh);
+            connect(bldg, &IsometricBuilding::clicked, this, &MapView::nodeClicked);
+        }
+    } else {
+        for (const auto& d : drawables) {
+            const auto& node = m_graph->node(d.nodeId);
+            auto* bldg = new VectorBuilding(d.nodeId, node.name);
+            qreal bw = bldg->boundingRect().width();
+            qreal bh = bldg->boundingRect().height();
+            bldg->setPos(d.sp.x() - bw / 2, d.sp.y() - bh / 2);
+            bldg->setZValue(10 + d.sp.y() * 0.01);
+            m_scene->addItem(bldg);
+            m_vectorBuildings[d.nodeId] = bldg;
+            m_labelMgr->registerLabel(d.nodeId, node.name,
+                bldg->pos() + QPointF(bw / 2, -12), 1.0, bh);
+            connect(bldg, &VectorBuilding::clicked, this, &MapView::nodeClicked);
+        }
     }
 
     updateLabelsAndLOD();
@@ -230,67 +321,25 @@ bool MapView::drawRealMapBackground(double minX, double minY, double maxX, doubl
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// drawGround — isometric grass plane
-// ═══════════════════════════════════════════════════════════════════════════
-
-void MapView::drawGround() {
-    const auto nodes = m_graph->allNodes();
-    double minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
-    for (const auto& n : nodes) {
-        minX = qMin(minX, n.x); minY = qMin(minY, n.y);
-        maxX = qMax(maxX, n.x); maxY = qMax(maxY, n.y);
-    }
-
-    qreal pad = 100.0 / m_logicScale;
-    QPointF tl = iso(minX - pad, minY - pad);
-    QPointF tr = iso(maxX + pad, minY - pad);
-    QPointF br = iso(maxX + pad, maxY + pad);
-    QPointF bl = iso(minX - pad, maxY + pad);
-
-    QPolygonF ground;
-    ground << tl << tr << br << bl;
-
-    QLinearGradient grad(tl.x(), tl.y(), br.x(), br.y());
-    grad.setColorAt(0.0, QColor(190, 210, 170));
-    grad.setColorAt(0.3, QColor(180, 200, 160));
-    grad.setColorAt(0.7, QColor(175, 195, 155));
-    grad.setColorAt(1.0, QColor(170, 190, 150));
-
-    auto* item = m_scene->addPolygon(ground, QPen(QColor(155, 175, 140), 1.5), QBrush(grad));
-    item->setZValue(-100);
-
-    QPen gridPen(QColor(160, 180, 145, 35), 0.5);
-    qreal step = 40;
-    for (int i = -5; i <= 30; ++i) {
-        QPointF ga = iso(minX - pad + i * step, minY - pad);
-        QPointF gb = iso(minX - pad + i * step, maxY + pad);
-        auto* gl = m_scene->addLine(ga.x(), ga.y(), gb.x(), gb.y(), gridPen);
-        gl->setZValue(-99);
-        QPointF gc = iso(minX - pad, minY - pad + i * step);
-        QPointF gd = iso(maxX + pad, minY - pad + i * step);
-        auto* gl2 = m_scene->addLine(gc.x(), gc.y(), gd.x(), gd.y(), gridPen);
-        gl2->setZValue(-99);
-    }
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
 // Path delegation
 // ═══════════════════════════════════════════════════════════════════════════
 
 void MapView::drawPath(const QVector<int>& path) {
     RenderContext ctx{m_scene, m_graph,
-                      [this](qreal x, qreal y) { return iso(x, y); }};
+                      [this](qreal x, qreal y) { return iso(x, y); },
+                      m_renderMode};
     m_pathViz->drawPath(ctx, path, BALL_RADIUS);
 }
 
 void MapView::animatePath(const QVector<int>& path) {
     RenderContext ctx{m_scene, m_graph,
-                      [this](qreal x, qreal y) { return iso(x, y); }};
+                      [this](qreal x, qreal y) { return iso(x, y); },
+                      m_renderMode};
     m_pathViz->animatePath(ctx, path, BALL_RADIUS);
 }
 
 void MapView::clearPath() {
-    m_pathViz->clearPath(m_scene, m_buildings);
+    m_pathViz->clearPath(m_scene, m_buildings, m_vectorBuildings);
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -298,18 +347,22 @@ void MapView::clearPath() {
 // ═══════════════════════════════════════════════════════════════════════════
 
 void MapView::highlightStartEnd(int startId, int endId) {
-    if (m_pathViz->startNodeId() >= 0)
-        if (auto* b = m_buildings.value(m_pathViz->startNodeId()))
-            b->setHighlighted(false);
-    if (m_pathViz->endNodeId() >= 0)
-        if (auto* b = m_buildings.value(m_pathViz->endNodeId()))
-            b->setHighlighted(false);
+    // Helper to un-highlight a node in whichever building map it belongs to
+    auto unhighlight = [&](int id) {
+        if (auto* b = m_buildings.value(id)) b->setHighlighted(false);
+        if (auto* b = m_vectorBuildings.value(id)) b->setHighlighted(false);
+    };
+    auto highlight = [&](int id, const QColor& color) {
+        if (auto* b = m_buildings.value(id)) b->setHighlighted(true, color);
+        if (auto* b = m_vectorBuildings.value(id)) b->setHighlighted(true, color);
+    };
+
+    if (m_pathViz->startNodeId() >= 0) unhighlight(m_pathViz->startNodeId());
+    if (m_pathViz->endNodeId() >= 0) unhighlight(m_pathViz->endNodeId());
     m_pathViz->setStartNodeId(startId);
     m_pathViz->setEndNodeId(endId);
-    if (auto* b = m_buildings.value(startId))
-        b->setHighlighted(true, QColor(50, 200, 80));
-    if (auto* b = m_buildings.value(endId))
-        b->setHighlighted(true, QColor(220, 50, 50));
+    highlight(startId, QColor(50, 200, 80));
+    highlight(endId, QColor(220, 50, 50));
 }
 
 void MapView::centerOnNode(int id) {
@@ -320,15 +373,17 @@ void MapView::centerOnNode(int id) {
 
 void MapView::highlightNode(int id, const QColor& color) {
     if (auto* b = m_buildings.value(id)) b->setHighlighted(true, color);
+    if (auto* b = m_vectorBuildings.value(id)) b->setHighlighted(true, color);
 }
 
 QPointF MapView::nodeScreenPos(int id) const {
     if (!m_graph || !m_graph->hasNode(id)) return {};
     const Node& n = m_graph->node(id);
     QPointF scenePos = iso(n.x, n.y);
-    auto* bldg = m_buildings.value(id);
-    if (bldg) {
+    if (auto* bldg = m_buildings.value(id)) {
         scenePos = bldg->pos() + QPointF(bldg->boundingRect().width() / 2, -20);
+    } else if (auto* bldg = m_vectorBuildings.value(id)) {
+        scenePos = bldg->pos() + QPointF(bldg->boundingRect().width() / 2, -12);
     }
     return mapFromScene(scenePos);
 }

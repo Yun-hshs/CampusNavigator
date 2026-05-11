@@ -26,6 +26,38 @@ static QPointF bezierControlPoint(const Node& a, const Node& b,
 void RoadRenderer::draw(const RenderContext& ctx) {
     const auto nodes = ctx.graph->allNodes();
 
+    // ── Flat 2D mode: simple straight lines ──
+    if (ctx.mode == RenderMode::Flat2D) {
+        for (const auto& n : nodes) {
+            for (const auto& e : ctx.graph->getEdges(n.id)) {
+                if (e.from >= e.to) continue;
+                const Node& a = ctx.graph->node(e.from);
+                const Node& b = ctx.graph->node(e.to);
+                QPointF pa = ctx.iso(a.x, a.y);
+                QPointF pb = ctx.iso(b.x, b.y);
+
+                bool isFootpath = (e.type == "footpath");
+                bool isMain = !isFootpath && (e.weight >= 150);
+
+                qreal width;
+                QColor color;
+                if (isFootpath) {
+                    width = 2; color = QColor(190, 180, 160);
+                } else if (isMain) {
+                    width = 6; color = QColor(180, 175, 165);
+                } else {
+                    width = 3.5; color = QColor(185, 180, 170);
+                }
+
+                QPen pen(color, width);
+                pen.setCapStyle(Qt::RoundCap);
+                auto* item = ctx.scene->addLine(pa.x(), pa.y(), pb.x(), pb.y(), pen);
+                item->setZValue(-55);
+            }
+        }
+        return;
+    }
+
     double maxW = 0;
     for (const auto& n : nodes)
         for (const auto& e : ctx.graph->getEdges(n.id))

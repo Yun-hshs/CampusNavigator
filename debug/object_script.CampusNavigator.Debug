@@ -1,5 +1,5 @@
 debug/main.o
-debug/MainWindow.o
+debug/mainwindow.o
 debug/MapView.o
 debug/RoadRenderer.o
 debug/AreaRenderer.o
@@ -8,6 +8,6 @@ debug/Graph.o
 debug/Dijkstra.o
 debug/DataLoader.o
 debug/qrc_res.o
-debug/moc_MainWindow.o
+debug/moc_mainwindow.o
 debug/moc_MapView.o
 debug/moc_PathVisualizer.o

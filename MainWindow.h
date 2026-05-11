@@ -46,6 +46,7 @@ private:
     QComboBox*   m_modeCombo   = nullptr;
     QPushButton* m_navigateBtn = nullptr;
     QPushButton* m_clearBtn    = nullptr;
+    QPushButton* m_viewModeBtn = nullptr;
 
     QLabel* m_infoTitle  = nullptr;
     QLabel* m_infoDetail = nullptr;
