@@ -1,6 +1,69 @@
-.login-page { padding-top: 120rpx; }
-.brand { padding: 40rpx; margin-bottom: 48rpx; }
-.title { font-size: 44rpx; font-weight: 700; }
-.subtitle { margin-top: 16rpx; color: #8c8c8c; }
-.ghost { border: 1rpx solid #d9d9d9; border-radius: 999rpx; }
-.agreement { margin-top: 32rpx; font-size: 24rpx; color: #8c8c8c; text-align: center; }
+.login-page {
+  min-height: 100vh;
+  padding: 88rpx 40rpx 56rpx;
+  background: linear-gradient(180deg, #eaf3ff 0%, #f7f9fc 50%, #ffffff 100%);
+  box-sizing: border-box;
+}
+
+.hero {
+  margin-top: 72rpx;
+  margin-bottom: 64rpx;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 10rpx 20rpx;
+  border-radius: 999rpx;
+  background: #d9e9ff;
+  color: #1f6bff;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.hero-title {
+  margin-top: 28rpx;
+  font-size: 54rpx;
+  color: #1f2d3d;
+  font-weight: 700;
+}
+
+.hero-subtitle {
+  margin-top: 18rpx;
+  font-size: 28rpx;
+  color: #6b7b8d;
+  line-height: 1.5;
+}
+
+.login-card {
+  border-radius: 28rpx;
+  background: #fff;
+  padding: 36rpx;
+  box-shadow: 0 20rpx 48rpx rgba(31, 73, 125, 0.12);
+}
+
+.wechat-btn,
+.guest-btn {
+  height: 90rpx;
+  border-radius: 999rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.wechat-btn {
+  margin-bottom: 20rpx;
+  background: linear-gradient(135deg, #18c35f 0%, #07b54d 100%);
+  color: #fff;
+}
+
+.guest-btn {
+  border: 1rpx solid #d8dee8;
+  color: #38516d;
+  background: #f8fafc;
+}
+
+.agreement {
+  margin-top: 28rpx;
+  text-align: center;
+  font-size: 24rpx;
+  color: #96a2b2;
+}

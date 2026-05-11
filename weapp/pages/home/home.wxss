@@ -1,26 +1,66 @@
-.results {
-  margin-bottom: 20rpx;
-  max-height: 480rpx;
+.home-page {
+  padding: 24rpx;
+  background: #f3f6fb;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.top-panel {
+  border-radius: 24rpx;
+  margin-bottom: 18rpx;
+}
+
+.results-list {
+  margin-top: 16rpx;
+  max-height: 360rpx;
   overflow-y: auto;
 }
 
-.map {
+.map-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24rpx;
+  margin-bottom: 18rpx;
+  padding: 0;
+}
+
+.campus-map {
+  width: 100%;
   height: 760rpx;
-  padding: 24rpx;
-  margin-bottom: 20rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #bbb;
+}
+
+.map-float-card {
+  position: absolute;
+  left: 20rpx;
+  right: 20rpx;
+  bottom: 20rpx;
+  border-radius: 18rpx;
+  padding: 18rpx 22rpx;
+  background: rgba(15, 34, 61, 0.78);
+  backdrop-filter: blur(6px);
+}
+
+.nav-title {
+  font-size: 30rpx;
+  color: #fff;
+  font-weight: 600;
+}
+
+.nav-subtitle {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .quick-actions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16rpx;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12rpx;
 }
+
 .quick {
-  padding: 24rpx;
+  padding: 20rpx 8rpx;
   text-align: center;
-  font-size: 28rpx;
+  font-size: 24rpx;
+  border-radius: 16rpx;
 }
