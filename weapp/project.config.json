@@ -1,0 +1,13 @@
+{
+  "description": "CampusNavigator Mini Program",
+  "appid": "touristappid",
+  "projectname": "campus-navigator-miniapp",
+  "miniprogramRoot": "./",
+  "compileType": "miniprogram",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "minified": true
+  }
+}

@@ -1,0 +1,4 @@
+<view class="container">
+  <view class="card panel">起点 / 终点 / 策略（最短距离、最少时间）</view>
+  <view class="card result">路线结果区域（总距离、预计时长、分段指引）</view>
+</view>

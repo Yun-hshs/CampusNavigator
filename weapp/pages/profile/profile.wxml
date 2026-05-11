@@ -1,0 +1,4 @@
+<view class="container">
+  <view class="card user">头像 / 昵称 / 学号（可选）</view>
+  <view class="card menu">收藏地点、历史路线、反馈、设置</view>
+</view>
