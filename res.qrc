@@ -195,5 +195,6 @@
         <file>buildings/buildingTiles_126.png</file>
         <file>buildings/buildingTiles_127.png</file>
         <file>buildings/buildingTiles_128.png</file>
+        <file>assets/campus_map.png</file>
     </qresource>
 </RCC>

@@ -174,7 +174,9 @@ void MapView::drawMap() {
     ctx.iso = [this](qreal x, qreal y) { return iso(x, y); };
 
     // Draw layers
-    drawGround();
+    if (!drawRealMapBackground(lxMin, lyMin, lxMax, lyMax)) {
+        drawGround();
+    }
     AreaRenderer::draw(ctx);
     RoadRenderer::draw(ctx);
 
@@ -204,6 +206,27 @@ void MapView::drawMap() {
 
     updateLabelsAndLOD();
     fitInView(m_scene->itemsBoundingRect().adjusted(-100, -100, 100, 100), Qt::KeepAspectRatio);
+}
+
+
+
+bool MapView::drawRealMapBackground(double minX, double minY, double maxX, double maxY) {
+    QPixmap realMap(":/assets/campus_map.png");
+    if (realMap.isNull()) return false;
+
+    constexpr qreal pad = 120.0;
+    QPointF tl = iso(minX, minY) + QPointF(-pad, -pad);
+    QPointF br = iso(maxX, maxY) + QPointF(pad, pad);
+    QRectF targetRect(tl, br);
+
+    auto* mapItem = m_scene->addPixmap(realMap.scaled(targetRect.size().toSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+    mapItem->setPos(targetRect.topLeft());
+    mapItem->setOpacity(0.72);
+    mapItem->setZValue(-120);
+
+    auto* mask = m_scene->addRect(targetRect, Qt::NoPen, QColor(255, 255, 255, 36));
+    mask->setZValue(-119);
+    return true;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

@@ -83,6 +83,7 @@ private:
     void setupScene();
     void initPixmaps();
     void drawGround();
+    bool drawRealMapBackground(double minX, double minY, double maxX, double maxY);
     void updateLabelsAndLOD();
 
     QGraphicsScene* m_scene = nullptr;
