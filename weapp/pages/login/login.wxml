@@ -1,11 +1,13 @@
-<view class="container login-page">
-  <view class="brand card">
-    <view class="title">校园导航系统</view>
-    <view class="subtitle">快速找到教学楼、食堂与服务点</view>
+<view class="login-page">
+  <view class="hero">
+    <view class="hero-badge">Campus Navigator</view>
+    <view class="hero-title">欢迎使用校园导航</view>
+    <view class="hero-subtitle">一键登录，快速查找地点并开始智能导航</view>
   </view>
 
-  <button class="primary" bindtap="onWechatLogin">微信授权登录</button>
-  <button class="ghost" bindtap="onGuestMode">游客模式</button>
-
-  <view class="agreement">登录即表示同意《用户协议》《隐私政策》</view>
+  <view class="login-card">
+    <button class="wechat-btn" bindtap="onWechatLogin">微信一键登录</button>
+    <button class="guest-btn" bindtap="onGuestMode">先逛逛（游客模式）</button>
+    <view class="agreement">登录即表示同意《用户协议》与《隐私政策》</view>
+  </view>
 </view>
