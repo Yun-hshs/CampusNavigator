@@ -1,8 +1,19 @@
 const app = getApp();
-const { searchPois } = require('../../services/poi');
+const { searchPois, getBuildings } = require('../../services/poi');
 const { planRoute } = require('../../services/route');
 
 let searchTimer = null;
+
+function fuzzyMatchBuildings(buildings, keyword) {
+  const key = String(keyword || '').trim().toLowerCase();
+  if (!key) return [];
+  return (buildings || []).filter((item) => {
+    const name = String(item.name || '').toLowerCase();
+    const type = String(item.type || '').toLowerCase();
+    const aliases = Array.isArray(item.aliases) ? item.aliases.join(' ').toLowerCase() : String(item.aliases || '').toLowerCase();
+    return name.includes(key) || type.includes(key) || aliases.includes(key);
+  });
+}
 
 Page({
   data: {
@@ -72,8 +83,29 @@ Page({
       searchPois(keyword).then((res) => {
         const { code, data } = res.data;
         this.setData({ searching: false });
-        if (code === 0) this.setData({ searchResults: data.pois || [] });
-      }).catch(() => this.setData({ searching: false }));
+        if (code === 0) {
+          const pois = data.pois || [];
+          if (pois.length) {
+            this.setData({ searchResults: pois });
+            return;
+          }
+
+          getBuildings().then((buildingRes) => {
+            const list = (buildingRes.data && buildingRes.data.data && buildingRes.data.data.buildings) || [];
+            const fallback = fuzzyMatchBuildings(list, keyword);
+            this.setData({ searchResults: fallback });
+            if (!fallback.length) {
+              wx.showToast({ title: '未找到相关建筑，请换个关键词', icon: 'none' });
+            }
+          }).catch(() => {
+            this.setData({ searchResults: [] });
+            wx.showToast({ title: '未找到相关建筑，请检查数据源', icon: 'none' });
+          });
+        }
+      }).catch(() => {
+        this.setData({ searching: false });
+        wx.showToast({ title: '搜索失败，请检查网络或后端服务', icon: 'none' });
+      });
     }, 300);
   },
 
