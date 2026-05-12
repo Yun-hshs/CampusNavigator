@@ -1,4 +1,3 @@
-const app = getApp();
 const { searchPois, getBuildings } = require('../../services/poi');
 
 let searchTimer = null;
@@ -105,13 +104,12 @@ Page({
   },
 
   onTapPoi(e) {
-    const { id, name } = e.detail;
+    const { id } = e.detail;
     const poi = this.data.results.find((item) => item.id === id || String(item.id) === String(id));
     if (poi) {
       this.updateMapByPoi(poi);
+      wx.showToast({ title: `已定位到${poi.name}`, icon: 'none' });
     }
-    app.globalData.pendingEnd = { id, name };
-    wx.switchTab({ url: '/pages/route/route' });
   },
 
   onMarkerTap(e) {
