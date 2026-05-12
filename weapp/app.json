@@ -17,11 +17,25 @@
     "backgroundColor": "#FFFFFF",
     "borderStyle": "black",
     "list": [
-      {"pagePath": "pages/home/home", "text": "导航"},
-      {"pagePath": "pages/route/route", "text": "路线"},
-      {"pagePath": "pages/profile/profile", "text": "我的"}
+      {
+        "pagePath": "pages/home/home",
+        "text": "导航"
+      },
+      {
+        "pagePath": "pages/route/route",
+        "text": "路线"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
     ]
   },
   "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于获取当前位置以提供校园导航与路线规划服务"
+    }
+  }
 }
