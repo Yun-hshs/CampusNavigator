@@ -1,26 +1,45 @@
-const app = getApp();
-const { searchPois } = require('../../services/poi');
+const { searchPois, getBuildings } = require('../../services/poi');
 
 let searchTimer = null;
+
+function extractBuildingsFromResponse(res) {
+  const payload = (res && res.data) || {};
+  const data = payload.data || {};
+  if (Array.isArray(data.buildings)) return data.buildings;
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(payload.buildings)) return payload.buildings;
+  return [];
+}
+
+function fuzzyMatchBuildings(buildings, keyword) {
+  const key = String(keyword || '').trim().toLowerCase();
+  if (!key) return [];
+  return (buildings || []).filter((item) => {
+    const name = String(item.name || '').toLowerCase();
+    const type = String(item.type || '').toLowerCase();
+    const aliases = Array.isArray(item.aliases) ? item.aliases.join(' ').toLowerCase() : String(item.aliases || '').toLowerCase();
+    return name.includes(key) || type.includes(key) || aliases.includes(key);
+  });
+}
 
 Page({
   data: {
     keyword: '',
     results: [],
     searching: false,
-    mapLatitude: 31.2304,
-    mapLongitude: 121.4737,
+    mapLatitude: 34.3849,
+    mapLongitude: 108.9863,
     mapScale: 16,
     markers: [
       {
         id: 10001,
-        latitude: 31.2304,
-        longitude: 121.4737,
-        title: '校园中心',
+        latitude: 34.3849,
+        longitude: 108.9863,
+        title: '陕西科技大学',
         width: 30,
         height: 30,
         callout: {
-          content: '校园中心',
+          content: '陕西科技大学',
           color: '#1f2d3d',
           bgColor: '#ffffff',
           borderRadius: 8,
@@ -50,13 +69,27 @@ Page({
       this.setData({ searching: false });
       if (code === 0) {
         const pois = data.pois || [];
-        this.setData({ results: pois });
         if (pois.length) {
+          this.setData({ results: pois });
           this.updateMapByPoi(pois[0]);
+          return;
         }
+
+        getBuildings().then((buildingRes) => {
+          const list = extractBuildingsFromResponse(buildingRes);
+          const fallback = fuzzyMatchBuildings(list, keyword);
+          this.setData({ results: fallback });
+          if (!fallback.length) {
+            wx.showToast({ title: '未找到相关建筑，请换个关键词', icon: 'none' });
+          }
+        }).catch(() => {
+          this.setData({ results: [] });
+          wx.showToast({ title: '未找到相关建筑，请检查数据源', icon: 'none' });
+        });
       }
     }).catch(() => {
       this.setData({ searching: false });
+      wx.showToast({ title: '搜索失败，请检查网络设置', icon: 'none' });
     });
   },
 
@@ -71,13 +104,12 @@ Page({
   },
 
   onTapPoi(e) {
-    const { id, name } = e.detail;
+    const { id } = e.detail;
     const poi = this.data.results.find((item) => item.id === id || String(item.id) === String(id));
     if (poi) {
       this.updateMapByPoi(poi);
+      wx.showToast({ title: `已定位到${poi.name}`, icon: 'none' });
     }
-    app.globalData.pendingEnd = { id, name };
-    wx.switchTab({ url: '/pages/route/route' });
   },
 
   onMarkerTap(e) {
