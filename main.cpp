@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "ApiServer.h"
 
 #include <QApplication>
 #include <QLocale>
@@ -17,6 +18,9 @@ int main(int argc, char *argv[])
             break;
         }
     }
+    ApiServer apiServer;
+    apiServer.start(8080);
+
     MainWindow w;
     w.show();
     return a.exec();

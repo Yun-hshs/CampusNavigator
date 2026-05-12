@@ -1,4 +1,4 @@
-QT += core gui widgets
+QT += core gui widgets network
 
 TARGET   = CampusNavigator
 TEMPLATE = app
@@ -16,7 +16,8 @@ SOURCES += \
     view/PathVisualizer.cpp \
     graph/Graph.cpp \
     algorithm/Dijkstra.cpp \
-    data/DataLoader.cpp
+    data/DataLoader.cpp \
+    ApiServer.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -29,7 +30,8 @@ HEADERS += \
     graph/Graph.h \
     algorithm/Dijkstra.h \
     data/DataLoader.h \
-    data/GeoTransform.h
+    data/GeoTransform.h \
+    ApiServer.h
 
 # Copy data directory to output so the app finds map.json at runtime
 CONFIG(release, debug|release) {
