@@ -3,6 +3,15 @@ const { searchPois, getBuildings } = require('../../services/poi');
 
 let searchTimer = null;
 
+function extractBuildingsFromResponse(res) {
+  const payload = (res && res.data) || {};
+  const data = payload.data || {};
+  if (Array.isArray(data.buildings)) return data.buildings;
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(payload.buildings)) return payload.buildings;
+  return [];
+}
+
 function fuzzyMatchBuildings(buildings, keyword) {
   const key = String(keyword || '').trim().toLowerCase();
   if (!key) return [];
@@ -68,7 +77,7 @@ Page({
         }
 
         getBuildings().then((buildingRes) => {
-          const list = (buildingRes.data && buildingRes.data.data && buildingRes.data.data.buildings) || [];
+          const list = extractBuildingsFromResponse(buildingRes);
           const fallback = fuzzyMatchBuildings(list, keyword);
           this.setData({ results: fallback });
           if (!fallback.length) {
@@ -81,7 +90,7 @@ Page({
       }
     }).catch(() => {
       this.setData({ searching: false });
-      wx.showToast({ title: '搜索失败，请检查网络或后端服务', icon: 'none' });
+      wx.showToast({ title: '搜索失败，请检查网络设置', icon: 'none' });
     });
   },
 
