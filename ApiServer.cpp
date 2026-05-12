@@ -9,6 +9,29 @@
 #include <QUrl>
 #include <QUrlQuery>
 #include <QDebug>
+#include <QtGlobal>
+
+namespace {
+constexpr double X_MIN = 280.0;
+constexpr double X_MAX = 720.0;
+constexpr double Y_MIN = 280.0;
+constexpr double Y_MAX = 950.0;
+
+// 陕西科技大学周边经纬度包围盒（可继续通过标定微调）
+constexpr double LON_WEST = 108.9810;
+constexpr double LON_EAST = 108.9915;
+constexpr double LAT_NORTH = 34.3895;
+constexpr double LAT_SOUTH = 34.3805;
+
+QPair<double, double> toLatLng(double x, double y) {
+    const double nx = qBound(0.0, (x - X_MIN) / (X_MAX - X_MIN), 1.0);
+    const double ny = qBound(0.0, (y - Y_MIN) / (Y_MAX - Y_MIN), 1.0);
+    const double lon = LON_WEST + (LON_EAST - LON_WEST) * nx;
+    const double lat = LAT_NORTH - (LAT_NORTH - LAT_SOUTH) * ny;
+    return {lat, lon};
+}
+}
+
 
 ApiServer::ApiServer(QObject *parent) : QObject(parent) {
     connect(&m_server, &QTcpServer::newConnection, this, &ApiServer::onNewConnection);
@@ -65,8 +88,9 @@ QByteArray ApiServer::handleRequest(const QString &method, const QString &pathWi
             o["name"] = n.name;
             o["type"] = n.type;
             o["description"] = n.description;
-            o["latitude"] = 34.3849 + (n.y / 100000.0);
-            o["longitude"] = 108.9863 + (n.x / 100000.0);
+            const auto [lat, lon] = toLatLng(n.x, n.y);
+            o["latitude"] = lat;
+            o["longitude"] = lon;
             buildings.append(o);
         }
         QJsonObject root{{"code", 0}, {"message", "ok"}, {"data", QJsonObject{{"buildings", buildings}}}};
@@ -83,8 +107,9 @@ QByteArray ApiServer::handleRequest(const QString &method, const QString &pathWi
             o["id"] = n.id;
             o["name"] = n.name;
             o["type"] = n.type;
-            o["latitude"] = 34.3849 + (n.y / 100000.0);
-            o["longitude"] = 108.9863 + (n.x / 100000.0);
+            const auto [lat, lon] = toLatLng(n.x, n.y);
+            o["latitude"] = lat;
+            o["longitude"] = lon;
             pois.append(o);
         }
         QJsonObject root{{"code", 0}, {"message", "ok"}, {"data", QJsonObject{{"pois", pois}}}};
