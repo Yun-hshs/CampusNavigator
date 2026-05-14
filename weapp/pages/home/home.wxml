@@ -1,5 +1,12 @@
 <view class="home-page">
-  <view class="top-panel card">
+  <view class="hero center-col">
+    <image class="school-badge" src="/images/school_badge.png" mode="aspectFit" />
+    <view class="hero-badge">Campus Navigator</view>
+    <view class="hero-title">校园导航主页</view>
+    <view class="hero-subtitle">搜索地点、查看地图、快速开始路径导航</view>
+  </view>
+
+  <view class="top-panel card glass-card center-col">
     <search-bar placeholder="搜索教学楼 / 食堂 / 办公室"
       value="{{keyword}}" showState="{{true}}"
       searching="{{searching}}" empty="{{!results.length}}"
@@ -29,12 +36,13 @@
       bindmarkertap="onMarkerTap"
     ></map>
 
-    <view class="map-float-card">
+    <view class="map-float-card center-col">
       <view class="nav-title">校园实时导航</view>
       <view class="nav-subtitle">已覆盖教学楼、食堂、停车场等核心地点</view>
     </view>
   </view>
 
+  <view class="quick-title">常用快捷入口</view>
   <view class="quick-actions">
     <view class="quick card" data-keyword="教学楼" bindtap="onQuickAction">去教学楼</view>
     <view class="quick card" data-keyword="食堂" bindtap="onQuickAction">去食堂</view>
