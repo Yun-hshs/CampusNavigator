@@ -13,16 +13,17 @@
 #include <cmath>
 
 namespace {
-constexpr double X_MIN = 280.0;
-constexpr double X_MAX = 720.0;
-constexpr double Y_MIN = 280.0;
-constexpr double Y_MAX = 950.0;
+// 校园中心参考点（图书馆 id=14）
+constexpr double REF_X = 550.0;
+constexpr double REF_Y = 630.0;
+constexpr double REF_LAT = 34.3849;
+constexpr double REF_LON = 108.9863;
 
-// 陕西科技大学周边经纬度包围盒（可继续通过标定微调）
-constexpr double LON_WEST = 108.9810;
-constexpr double LON_EAST = 108.9915;
-constexpr double LAT_NORTH = 34.3895;
-constexpr double LAT_SOUTH = 34.3805;
+// 实际地理比例因子
+// 在纬度34.38°处：1度经度 ≈ 89km，1度纬度 ≈ 111km
+// 逻辑坐标单位约为1米
+constexpr double LON_PER_METER = 1.0 / 89000.0;  // ≈ 0.00001124
+constexpr double LAT_PER_METER = 1.0 / 111000.0; // ≈ 0.00000901
 
 // 以图书馆作为地图标定中心（data/map.json 中 id=14, x=550, y=630）
 constexpr double LIBRARY_X = 550.0;
