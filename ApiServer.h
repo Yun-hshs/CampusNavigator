@@ -17,7 +17,7 @@ private slots:
 
 private:
     void handleSocket(QTcpSocket *socket);
-    QByteArray handleRequest(const QString &method, const QString &pathWithQuery) const;
+    QByteArray handleRequest(const QString &method, const QString &pathWithQuery, const QByteArray &body = QByteArray()) const;
     QByteArray jsonResponse(const QByteArray &json, const QByteArray &status = "200 OK") const;
     QByteArray notFound() const;
     QByteArray badRequest(const QString &msg) const;

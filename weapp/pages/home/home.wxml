@@ -1,25 +1,51 @@
 <view class="home-page">
-  <view class="hero center-col">
-    <image class="school-badge" src="/images/school_badge.png" mode="aspectFit" />
-    <view class="hero-badge">Campus Navigator</view>
-    <view class="hero-title">校园导航主页</view>
-    <view class="hero-subtitle">搜索地点、查看地图、快速开始路径导航</view>
-  </view>
+  <!-- 搜索栏 -->
+  <view class="search-section">
+    <view class="search-bar">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        placeholder="搜索教学楼、食堂、办公室..."
+        placeholder-class="placeholder"
+        value="{{keyword}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearchConfirm"
+        confirm-type="search"
+      />
+      <text wx:if="{{keyword}}" class="clear-btn" bindtap="onClearSearch">✕</text>
+    </view>
 
-  <view class="top-panel card glass-card center-col">
-    <search-bar placeholder="搜索教学楼 / 食堂 / 办公室"
-      value="{{keyword}}" showState="{{true}}"
-      searching="{{searching}}" empty="{{!results.length}}"
-      bind:input="onSearchInput" bind:clear="onClearSearch" />
+    <!-- 搜索结果下拉 -->
+    <view wx:if="{{results.length}}" class="results-dropdown">
+      <view
+        wx:for="{{results}}"
+        wx:key="id"
+        class="result-item"
+        data-id="{{item.id}}"
+        data-lat="{{item.latitude}}"
+        data-lng="{{item.longitude}}"
+        data-name="{{item.name}}"
+        bindtap="onTapResult"
+      >
+        <text class="result-icon">📍</text>
+        <view class="result-info">
+          <text class="result-name">{{item.name}}</text>
+          <text class="result-type">{{item.type || '建筑'}}</text>
+        </view>
+      </view>
+    </view>
 
-    <view wx:if="{{results.length}}" class="results-list">
-      <poi-card wx:for="{{results}}" wx:key="id"
-        id="{{item.id}}" name="{{item.name}}" type="{{item.type}}"
-        bind:tap="onTapPoi" />
+    <!-- 搜索状态提示 -->
+    <view wx:if="{{searching}}" class="search-status">
+      <text>搜索中...</text>
+    </view>
+    <view wx:elif="{{keyword && !results.length && !searching}}" class="search-status">
+      <text>未找到相关地点</text>
     </view>
   </view>
 
-  <view class="map-wrap card">
+  <!-- 地图区域 -->
+  <view class="map-wrapper">
     <map
       id="campusMap"
       class="campus-map"
@@ -28,25 +54,65 @@
       scale="{{mapScale}}"
       markers="{{markers}}"
       polyline="{{polyline}}"
-      show-location
-      enable-3D="{{true}}"
+      show-location="{{true}}"
       enable-zoom="{{true}}"
+      enable-scroll="{{true}}"
       enable-rotate="{{false}}"
+      enable-satellite="{{false}}"
       show-compass="{{true}}"
+      show-scale="{{true}}"
+      subkey="QCMBZ-EIMKQ-SXS5E-4YV4K-BIAYV-KGF3N"
       bindmarkertap="onMarkerTap"
-    ></map>
+      bindregionchange="onMapMove"
+      bindtap="onMapTap"
+    />
 
-    <view class="map-float-card center-col">
-      <view class="nav-title">校园实时导航</view>
-      <view class="nav-subtitle">已覆盖教学楼、食堂、停车场等核心地点</view>
+    <!-- 底部信息栏 -->
+    <view class="map-info-bar">
+      <view class="info-left">
+        <text class="info-icon">🏫</text>
+        <text class="info-text">陕西科技大学</text>
+      </view>
+      <view class="info-right">
+        <text class="building-count">已收录 {{buildingCount}} 个地点</text>
+      </view>
+    </view>
+
+    <!-- 路径信息浮层 -->
+    <view wx:if="{{showRoute}}" class="route-info">
+      <view class="route-header">
+        <text class="route-title">路线规划</text>
+        <text class="route-close" bindtap="onCloseRoute">✕</text>
+      </view>
+      <view class="route-detail">
+        <text class="route-from">📍 {{routeStart}}</text>
+        <text class="route-arrow">→</text>
+        <text class="route-to">📍 {{routeEnd}}</text>
+      </view>
+      <view class="route-stats">
+        <text class="route-distance">距离: {{routeDistance}}m</text>
+        <text class="route-time">步行约 {{routeTime}}分钟</text>
+      </view>
     </view>
   </view>
 
-  <view class="quick-title">常用快捷入口</view>
+  <!-- 快捷操作 -->
   <view class="quick-actions">
-    <view class="quick card" data-keyword="教学楼" bindtap="onQuickAction">去教学楼</view>
-    <view class="quick card" data-keyword="食堂" bindtap="onQuickAction">去食堂</view>
-    <view class="quick card" data-keyword="厕所" bindtap="onQuickAction">找厕所</view>
-    <view class="quick card" data-keyword="停车场" bindtap="onQuickAction">找停车位</view>
+    <view class="quick-btn" data-keyword="教学楼" bindtap="onQuickSearch">
+      <text class="quick-icon">📚</text>
+      <text class="quick-text">教学楼</text>
+    </view>
+    <view class="quick-btn" data-keyword="食堂" bindtap="onQuickSearch">
+      <text class="quick-icon">🍜</text>
+      <text class="quick-text">食堂</text>
+    </view>
+    <view class="quick-btn" data-keyword="图书馆" bindtap="onQuickSearch">
+      <text class="quick-icon">📖</text>
+      <text class="quick-text">图书馆</text>
+    </view>
+    <view class="quick-btn" data-keyword="宿舍" bindtap="onQuickSearch">
+      <text class="quick-icon">🏠</text>
+      <text class="quick-text">宿舍</text>
+    </view>
   </view>
 </view>

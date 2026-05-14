@@ -10,6 +10,7 @@
 #include <QUrlQuery>
 #include <QDebug>
 #include <QtGlobal>
+#include <cmath>
 
 namespace {
 constexpr double X_MIN = 280.0;
@@ -68,11 +69,15 @@ void ApiServer::handleSocket(QTcpSocket *socket) {
         return;
     }
 
-    socket->write(handleRequest(QString::fromUtf8(parts[0]), QString::fromUtf8(parts[1])));
+    // 提取请求体（在空行之后）
+    const int bodyStart = req.indexOf("\r\n\r\n");
+    const QByteArray body = (bodyStart >= 0) ? req.mid(bodyStart + 4) : QByteArray();
+
+    socket->write(handleRequest(QString::fromUtf8(parts[0]), QString::fromUtf8(parts[1]), body));
     socket->disconnectFromHost();
 }
 
-QByteArray ApiServer::handleRequest(const QString &method, const QString &pathWithQuery) const {
+QByteArray ApiServer::handleRequest(const QString &method, const QString &pathWithQuery, const QByteArray &body) const {
     if (method != "GET" && method != "POST") return badRequest("method not supported");
 
     const QUrl url(pathWithQuery);
@@ -113,6 +118,76 @@ QByteArray ApiServer::handleRequest(const QString &method, const QString &pathWi
             pois.append(o);
         }
         QJsonObject root{{"code", 0}, {"message", "ok"}, {"data", QJsonObject{{"pois", pois}}}};
+        return jsonResponse(QJsonDocument(root).toJson(QJsonDocument::Compact));
+    }
+
+    if (method == "GET" && path.startsWith("/api/poi/")) {
+        const QString idStr = path.mid(9);
+        bool ok;
+        const int id = idStr.toInt(&ok);
+        if (!ok) return badRequest("invalid id");
+
+        for (const Node &n : m_graph.allNodes()) {
+            if (n.id == id) {
+                QJsonObject o;
+                o["id"] = n.id;
+                o["name"] = n.name;
+                o["type"] = n.type;
+                o["description"] = n.description;
+                const auto [lat, lon] = toLatLng(n.x, n.y);
+                o["latitude"] = lat;
+                o["longitude"] = lon;
+                QJsonObject root{{"code", 0}, {"message", "ok"}, {"data", o}};
+                return jsonResponse(QJsonDocument(root).toJson(QJsonDocument::Compact));
+            }
+        }
+        return notFound();
+    }
+
+    if (method == "POST" && path == "/api/route") {
+        const QJsonDocument doc = QJsonDocument::fromJson(body);
+        const QJsonObject obj = doc.object();
+
+        const int startId = obj["start"].toInt();
+        const int endId = obj["end"].toInt();
+
+        const QVector<int> pathNodes = Dijkstra::findPath(m_graph, startId, endId);
+
+        if (pathNodes.empty()) {
+            QJsonObject root{{"code", 1}, {"message", "no route found"}, {"data", QJsonObject()}};
+            return jsonResponse(QJsonDocument(root).toJson(QJsonDocument::Compact));
+        }
+
+        QJsonArray pathArray;
+        double totalDistance = 0.0;
+
+        for (int i = 0; i < pathNodes.size(); ++i) {
+            if (!m_graph.hasNode(pathNodes[i])) continue;
+
+            const Node n = m_graph.node(pathNodes[i]);
+            const auto [lat, lon] = toLatLng(n.x, n.y);
+            QJsonObject point;
+            point["id"] = n.id;
+            point["name"] = n.name;
+            point["latitude"] = lat;
+            point["longitude"] = lon;
+            pathArray.append(point);
+
+            // 计算路径距离
+            if (i > 0 && m_graph.hasNode(pathNodes[i - 1])) {
+                const Node prev = m_graph.node(pathNodes[i - 1]);
+                double dx = n.x - prev.x;
+                double dy = n.y - prev.y;
+                totalDistance += std::sqrt(dx * dx + dy * dy);
+            }
+        }
+
+        QJsonObject data;
+        data["path"] = pathArray;
+        data["distance"] = totalDistance;
+        data["time"] = totalDistance / 83.3; // 步行速度 5km/h = 83.3m/min
+
+        QJsonObject root{{"code", 0}, {"message", "ok"}, {"data", data}};
         return jsonResponse(QJsonDocument(root).toJson(QJsonDocument::Compact));
     }
 

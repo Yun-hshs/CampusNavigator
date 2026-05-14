@@ -7,7 +7,9 @@ debug/PathVisualizer.o
 debug/Graph.o
 debug/Dijkstra.o
 debug/DataLoader.o
+debug/ApiServer.o
 debug/qrc_res.o
 debug/moc_mainwindow.o
 debug/moc_MapView.o
 debug/moc_PathVisualizer.o
+debug/moc_ApiServer.o

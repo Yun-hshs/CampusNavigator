@@ -1,13 +1,26 @@
 <view class="login-page">
-  <view class="hero">
-    <view class="hero-badge">Campus Navigator</view>
-    <view class="hero-title">欢迎使用校园导航</view>
-    <view class="hero-subtitle">一键登录，快速查找地点并开始智能导航</view>
-  </view>
+  <view class="login-container">
+    <!-- Logo 区域 -->
+    <view class="logo-section">
+      <view class="logo-icon">
+        <text class="icon-emoji">🎓</text>
+      </view>
+      <view class="app-name">校园导航</view>
+      <view class="app-slogan">智慧校园，一键直达</view>
+    </view>
 
-  <view class="login-card">
-    <button class="wechat-btn" bindtap="onWechatLogin">微信一键登录</button>
-    <button class="guest-btn" bindtap="onGuestMode">先逛逛（游客模式）</button>
-    <view class="agreement">登录即表示同意《用户协议》与《隐私政策》</view>
+    <!-- 按钮区域 -->
+    <view class="btn-section">
+      <button class="wechat-btn" bindtap="onWechatLogin">
+        <text class="btn-icon">💬</text>
+        <text>微信一键登录</text>
+      </button>
+      <button class="guest-btn" bindtap="onGuestMode">先逛逛</button>
+    </view>
+
+    <!-- 协议区域 -->
+    <view class="agreement">
+      登录即同意 <text class="link">《用户协议》</text> 与 <text class="link">《隐私政策》</text>
+    </view>
   </view>
 </view>

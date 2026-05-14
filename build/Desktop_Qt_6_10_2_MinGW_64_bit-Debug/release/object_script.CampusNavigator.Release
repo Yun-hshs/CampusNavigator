@@ -7,7 +7,9 @@ release/PathVisualizer.o
 release/Graph.o
 release/Dijkstra.o
 release/DataLoader.o
+release/ApiServer.o
 release/qrc_res.o
 release/moc_mainwindow.o
 release/moc_MapView.o
 release/moc_PathVisualizer.o
+release/moc_ApiServer.o
