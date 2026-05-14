@@ -25,17 +25,19 @@ constexpr double REF_LON = 108.9863;
 constexpr double LON_PER_METER = 1.0 / 89000.0;  // ≈ 0.00001124
 constexpr double LAT_PER_METER = 1.0 / 111000.0; // ≈ 0.00000901
 
+// 以图书馆作为地图标定中心（data/map.json 中 id=14, x=550, y=630）
+constexpr double LIBRARY_X = 550.0;
+constexpr double LIBRARY_Y = 630.0;
+constexpr double LIBRARY_LAT = 34.3819;
+constexpr double LIBRARY_LON = 108.9839;
+
 QPair<double, double> toLatLng(double x, double y) {
-    // 计算相对于参考点的偏移（米）
-    double dx = x - REF_X;
-    double dy = y - REF_Y;
+    const double lonPerUnit = (LON_EAST - LON_WEST) / (X_MAX - X_MIN);
+    const double latPerUnit = (LAT_NORTH - LAT_SOUTH) / (Y_MAX - Y_MIN);
 
-    // 转换为经纬度
-    // 逻辑坐标：x向东增大，y向南增大
-    // 经纬度：经度向东增大，纬度向北增大
-    double lon = REF_LON + dx * LON_PER_METER;
-    double lat = REF_LAT - dy * LAT_PER_METER;
-
+    // 围绕图书馆中心做线性映射，减少全局偏移。
+    const double lon = LIBRARY_LON + (x - LIBRARY_X) * lonPerUnit;
+    const double lat = LIBRARY_LAT - (y - LIBRARY_Y) * latPerUnit;
     return {lat, lon};
 }
 }
