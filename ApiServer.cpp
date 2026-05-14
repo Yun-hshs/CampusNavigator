@@ -24,11 +24,19 @@ constexpr double LON_EAST = 108.9915;
 constexpr double LAT_NORTH = 34.3895;
 constexpr double LAT_SOUTH = 34.3805;
 
+// 以图书馆作为地图标定中心（data/map.json 中 id=14, x=550, y=630）
+constexpr double LIBRARY_X = 550.0;
+constexpr double LIBRARY_Y = 630.0;
+constexpr double LIBRARY_LAT = 34.3819;
+constexpr double LIBRARY_LON = 108.9839;
+
 QPair<double, double> toLatLng(double x, double y) {
-    const double nx = qBound(0.0, (x - X_MIN) / (X_MAX - X_MIN), 1.0);
-    const double ny = qBound(0.0, (y - Y_MIN) / (Y_MAX - Y_MIN), 1.0);
-    const double lon = LON_WEST + (LON_EAST - LON_WEST) * nx;
-    const double lat = LAT_NORTH - (LAT_NORTH - LAT_SOUTH) * ny;
+    const double lonPerUnit = (LON_EAST - LON_WEST) / (X_MAX - X_MIN);
+    const double latPerUnit = (LAT_NORTH - LAT_SOUTH) / (Y_MAX - Y_MIN);
+
+    // 围绕图书馆中心做线性映射，减少全局偏移。
+    const double lon = LIBRARY_LON + (x - LIBRARY_X) * lonPerUnit;
+    const double lat = LIBRARY_LAT - (y - LIBRARY_Y) * latPerUnit;
     return {lat, lon};
 }
 }
