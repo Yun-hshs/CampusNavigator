@@ -37,6 +37,7 @@
   },
   "style": "v2",
   "sitemapLocation": "sitemap.json",
+  "requiredPrivateInfos": ["getLocation"],
   "permission": {
     "scope.userLocation": {
       "desc": "用于获取当前位置以提供校园导航与路线规划服务"

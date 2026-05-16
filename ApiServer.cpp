@@ -13,29 +13,25 @@
 #include <cmath>
 
 namespace {
-// 以图书馆作为地图标定中心（data/map.json 中 id=14, x=550, y=630）
-constexpr double REF_X = 550.0;
-constexpr double REF_Y = 630.0;
-constexpr double REF_LAT = 34.3819;
-constexpr double REF_LON = 108.9839;
+// 仿射变换: map(x,y) → GCJ-02(lat,lon)
+// 标定点 A: 图书馆 map(550,630) → GCJ-02(34.3776775, 108.9772584)
+// 标定点 B: 西门   map(280,750) → GCJ-02(34.377092,  108.97174)
+constexpr double PX_A = 550.0, PY_A = 630.0;
+constexpr double LAT_A = 34.37767749579197, LON_A = 108.97725841533695;
 
-// 实际地理比例因子
-// 在纬度34.38°处：1度经度 ≈ 89km，1度纬度 ≈ 111km
-// 逻辑坐标单位约为1米
-constexpr double LON_PER_METER = 1.0 / 91870.0;  // 1°≈91.87km @34.38°N
-constexpr double LAT_PER_METER = 1.0 / 111194.0; // 1°≈111.19km
+// 仿射系数（从两个标定点解出）
+// lat = LAT_A + a1*dx + b1*dy
+// lon = LON_A + a2*dx + b2*dy
+constexpr double A1 = -2.03614e-8;  // lat 对 x 的灵敏度
+constexpr double B1 =  4.90082e-6;  // lat 对 y 的灵敏度
+constexpr double A2 = -2.03614e-5;  // lon 对 x 的灵敏度
+constexpr double B2 = -5.06939e-6;  // lon 对 y 的灵敏度
 
 QPair<double, double> toLatLng(double x, double y) {
-    // 计算相对于参考点的偏移（米）
-    double dx = x - REF_X;
-    double dy = y - REF_Y;
-
-    // 转换为经纬度
-    // 逻辑坐标：x向东增大，y向南增大
-    // 经纬度：经度向东增大，纬度向北增大
-    double lon = REF_LON + dx * LON_PER_METER;
-    double lat = REF_LAT - dy * LAT_PER_METER;
-
+    double dx = x - PX_A;
+    double dy = y - PY_A;
+    double lat = LAT_A + A1 * dx + B1 * dy;
+    double lon = LON_A + A2 * dx + B2 * dy;
     return {lat, lon};
 }
 }

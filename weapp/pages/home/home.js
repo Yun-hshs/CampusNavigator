@@ -35,6 +35,27 @@ Page({
     this.mapCtx = wx.createMapContext('campusMap', this);
     // 加载建筑数据
     this.loadBuildings();
+
+    // [DEBUG] 获取当前位置的 GCJ-02 坐标，用于校准参考点
+    wx.getLocation({
+      type: 'gcj02',
+      success: (res) => {
+        console.log('[DEBUG] GCJ-02:', res.latitude, res.longitude);
+        wx.showModal({
+          title: '当前位置(GCJ-02)',
+          content: 'lat: ' + res.latitude + '\nlon: ' + res.longitude,
+          showCancel: false
+        });
+      },
+      fail: (err) => {
+        console.error('[DEBUG] 定位失败:', err);
+        wx.showModal({
+          title: '定位失败',
+          content: JSON.stringify(err),
+          showCancel: false
+        });
+      }
+    });
   },
 
   onShow() {
