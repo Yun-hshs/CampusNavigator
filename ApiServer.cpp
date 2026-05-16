@@ -13,25 +13,22 @@
 #include <cmath>
 
 namespace {
-// 仿射变换: map(x,y) → GCJ-02(lat,lon)
-// 标定点 A: 图书馆 map(550,630) → GCJ-02(34.3776775, 108.9772584)
-// 标定点 B: 西门   map(280,750) → GCJ-02(34.377092,  108.97174)
-constexpr double PX_A = 550.0, PY_A = 630.0;
+// 2D 坐标到 GCJ-02 的映射（以图书馆为中心进行对齐）
+// 标定点 A: 图书馆 map(530,620) → GCJ-02(34.3776775, 108.9772584)
+// 标定点 B: 西门   map(300,720) → GCJ-02(34.377092,  108.97174)
+constexpr double PX_A = 530.0, PY_A = 620.0;
 constexpr double LAT_A = 34.37767749579197, LON_A = 108.97725841533695;
 
-// 仿射系数（从两个标定点解出）
-// lat = LAT_A + a1*dx + b1*dy
-// lon = LON_A + a2*dx + b2*dy
-constexpr double A1 = -2.03614e-8;  // lat 对 x 的灵敏度
-constexpr double B1 =  4.90082e-6;  // lat 对 y 的灵敏度
-constexpr double A2 = -2.03614e-5;  // lon 对 x 的灵敏度
-constexpr double B2 = -5.06939e-6;  // lon 对 y 的灵敏度
+// 采用按轴缩放（保持 Qt 2D 平面布局关系）：
+// lat 主要由 y 决定，lon 主要由 x 决定。
+constexpr double LAT_PER_PX_Y = -5.8549579197375575e-06;
+constexpr double LON_PER_PX_X =  2.3993110160656373e-05;
 
 QPair<double, double> toLatLng(double x, double y) {
     double dx = x - PX_A;
     double dy = y - PY_A;
-    double lat = LAT_A + A1 * dx + B1 * dy;
-    double lon = LON_A + A2 * dx + B2 * dy;
+    double lat = LAT_A + LAT_PER_PX_Y * dy;
+    double lon = LON_A + LON_PER_PX_X * dx;
     return {lat, lon};
 }
 }
