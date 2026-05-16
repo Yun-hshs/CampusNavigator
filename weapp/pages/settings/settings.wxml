@@ -1,0 +1,40 @@
+<view class="page">
+  <view class="section-title">缓存管理</view>
+  <view class="settings-card">
+    <view class="setting-item" bindtap="onClearFavorites">
+      <text class="setting-label">收藏数据</text>
+      <text class="setting-value">{{favCount}} 条</text>
+      <text class="setting-action">清除</text>
+    </view>
+    <view class="setting-item" bindtap="onClearHistory">
+      <text class="setting-label">历史记录</text>
+      <text class="setting-value">{{historyCount}} 条</text>
+      <text class="setting-action">清除</text>
+    </view>
+    <view class="setting-item" bindtap="onClearFeedbacks">
+      <text class="setting-label">反馈数据</text>
+      <text class="setting-value">{{feedbackCount}} 条</text>
+      <text class="setting-action">清除</text>
+    </view>
+    <view class="setting-item last" bindtap="onClearAll">
+      <text class="setting-label danger">清除所有数据</text>
+      <text class="setting-action danger">全部清除</text>
+    </view>
+  </view>
+
+  <view class="section-title">关于</view>
+  <view class="settings-card">
+    <view class="setting-item" bindtap="onAbout">
+      <text class="setting-label">当前版本</text>
+      <text class="setting-value">v{{version}}</text>
+    </view>
+    <view class="setting-item">
+      <text class="setting-label">所属校园</text>
+      <text class="setting-value">陕西科技大学</text>
+    </view>
+    <view class="setting-item last">
+      <text class="setting-label">缓存大小</text>
+      <text class="setting-value">{{cacheSize}} KB</text>
+    </view>
+  </view>
+</view>

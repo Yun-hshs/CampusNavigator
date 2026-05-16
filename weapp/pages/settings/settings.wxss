@@ -1,0 +1,69 @@
+.page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+.section-title {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 16rpx;
+  padding-left: 8rpx;
+}
+
+.settings-card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  margin-bottom: 32rpx;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 24rpx;
+  position: relative;
+}
+
+.setting-item:not(.last)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 24rpx;
+  right: 24rpx;
+  height: 1rpx;
+  background: #f0f0f0;
+}
+
+.setting-item:active {
+  background: #f5f7fa;
+}
+
+.setting-label {
+  flex: 1;
+  font-size: 30rpx;
+  color: #333333;
+}
+
+.setting-label.danger {
+  color: #ff4d4f;
+}
+
+.setting-value {
+  font-size: 26rpx;
+  color: #999999;
+  margin-right: 16rpx;
+}
+
+.setting-action {
+  font-size: 26rpx;
+  color: #667eea;
+  padding: 4rpx 8rpx;
+}
+
+.setting-action.danger {
+  color: #ff4d4f;
+}

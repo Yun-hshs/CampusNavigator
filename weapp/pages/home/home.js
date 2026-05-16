@@ -1,4 +1,6 @@
 const { request } = require('../../services/request');
+const storage = require('../../services/storage');
+const app = getApp();
 
 let searchTimer = null;
 
@@ -19,7 +21,9 @@ Page({
     routeDistance: 0,
     routeTime: 0,
     startPoint: null,
-    endPoint: null
+    endPoint: null,
+    isFavorite: false,
+    currentPoi: null
   },
 
   onLoad() {
@@ -34,9 +38,20 @@ Page({
   },
 
   onShow() {
-    // 每次显示页面时刷新建筑数据
     if (this.mapCtx) {
       this.loadBuildings();
+    }
+    // 从收藏页跳转过来定位建筑
+    const pending = app.globalData.pendingEnd;
+    if (pending) {
+      app.globalData.pendingEnd = null;
+      this.locateToPoi({
+        id: pending.id,
+        name: pending.name,
+        latitude: pending.latitude || 34.3819,
+        longitude: pending.longitude || 108.9839
+      });
+      this.setData({ keyword: pending.name, results: [] });
     }
   },
 
@@ -64,7 +79,6 @@ Page({
       title: building.name,
       width: 30,
       height: 30,
-      iconPath: '/images/marker.png', // 使用自定义标记图标
       callout: {
         content: building.name,
         color: '#333333',
@@ -184,8 +198,32 @@ Page({
       markers,
       mapLatitude: lat,
       mapLongitude: lng,
-      mapScale: 18
+      mapScale: 18,
+      currentPoi: poi,
+      isFavorite: storage.isFavorite(String(poi.id))
     });
+  },
+
+  // 收藏/取消收藏
+  onToggleFavorite() {
+    const poi = this.data.currentPoi;
+    if (!poi) return;
+    if (this.data.isFavorite) {
+      storage.removeFavoriteByBuildingId(String(poi.id));
+      this.setData({ isFavorite: false });
+      wx.showToast({ title: '已取消收藏', icon: 'none' });
+    } else {
+      storage.addFavorite({
+        buildingId: String(poi.id),
+        name: poi.name,
+        type: poi.type || '',
+        description: poi.description || '',
+        latitude: poi.latitude,
+        longitude: poi.longitude
+      });
+      this.setData({ isFavorite: true });
+      wx.showToast({ title: '已收藏', icon: 'success' });
+    }
   },
 
   // 点击地图标记

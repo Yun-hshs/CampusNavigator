@@ -94,6 +94,12 @@
         <text class="route-time">步行约 {{routeTime}}分钟</text>
       </view>
     </view>
+
+    <!-- 收藏按钮 -->
+    <view wx:if="{{currentPoi}}" class="fav-float-btn {{isFavorite ? 'active' : ''}}"
+          bindtap="onToggleFavorite">
+      <text>{{isFavorite ? '&#x2605;' : '&#x2606;'}}</text>
+    </view>
   </view>
 
   <!-- 快捷操作 -->

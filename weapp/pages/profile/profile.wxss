@@ -1,1 +1,224 @@
-.user, .menu { padding: 24rpx; margin-bottom: 20rpx; min-height: 160rpx; }
+.profile-page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  display: flex;
+  flex-direction: column;
+}
+
+.status-bar {
+  background: #667eea;
+}
+
+/* ---- 渐变头部 ---- */
+.header {
+  position: relative;
+  padding: 32rpx 32rpx 48rpx;
+  overflow: hidden;
+}
+
+.header-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 0 0 40rpx 40rpx;
+}
+
+.user-info {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border-radius: 20rpx;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.user-info:active {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.avatar {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 50%;
+  border: 4rpx solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+}
+
+.user-detail {
+  flex: 1;
+  margin-left: 24rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.nickname {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.4;
+}
+
+.student-id {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 8rpx;
+}
+
+.student-id.tip {
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+}
+
+.arrow {
+  font-size: 40rpx;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 300;
+  flex-shrink: 0;
+}
+
+/* ---- 数据统计卡片 ---- */
+.stats-card {
+  position: relative;
+  z-index: 2;
+  margin: -24rpx 32rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 32rpx 16rpx;
+  background: #ffffff;
+  border-radius: 20rpx;
+  box-shadow: 0 8rpx 32rpx rgba(102, 126, 234, 0.12);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  padding: 12rpx 0;
+}
+
+.stat-item:active {
+  background: #f5f7fa;
+  border-radius: 16rpx;
+}
+
+.stat-num {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #667eea;
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: #999999;
+  margin-top: 8rpx;
+}
+
+.stat-divider {
+  width: 1rpx;
+  height: 56rpx;
+  background: #eeeeee;
+}
+
+/* ---- 菜单区域 ---- */
+.menu-section {
+  margin-top: 32rpx;
+  padding: 0 32rpx;
+}
+
+.menu-title {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 16rpx;
+  padding-left: 8rpx;
+}
+
+.menu-card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 24rpx;
+  position: relative;
+}
+
+.menu-item:not(.last)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 96rpx;
+  right: 24rpx;
+  height: 1rpx;
+  background: #f0f0f0;
+}
+
+.menu-item:active {
+  background: #f5f7fa;
+}
+
+.menu-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-text {
+  font-size: 36rpx;
+  color: #ffffff;
+}
+
+.fav-icon {
+  background: linear-gradient(135deg, #f6d365, #fda085);
+}
+
+.history-icon {
+  background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+}
+
+.feedback-icon {
+  background: linear-gradient(135deg, #84fab0, #8fd3f4);
+}
+
+.settings-icon {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.about-icon {
+  background: linear-gradient(135deg, #fccb90, #d57eeb);
+}
+
+.menu-label {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #333333;
+  margin-left: 20rpx;
+  flex-shrink: 0;
+}
+
+.menu-desc {
+  flex: 1;
+  font-size: 22rpx;
+  color: #bbbbbb;
+  text-align: right;
+  margin-right: 12rpx;
+}
+
+.menu-card .arrow {
+  color: #cccccc;
+  font-size: 36rpx;
+}

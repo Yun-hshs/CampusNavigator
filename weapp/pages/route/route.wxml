@@ -1,44 +1,116 @@
-<view class="container">
+<view class="route-page">
   <!-- 起终点选择 -->
-  <view class="card panel">
-    <view class="endpoint" data-target="start" bindtap="openSearch">
-      <view class="dot green"></view>
-      <view class="ep-text {{startName ? '' : 'placeholder'}}">
-        {{startName || '选择起点'}}
+  <view class="endpoint-panel">
+    <view class="endpoint-card">
+      <view class="endpoint" data-target="start" bindtap="openSearch">
+        <view class="dot green"></view>
+        <view class="ep-text {{startName ? '' : 'placeholder'}}">
+          {{startName || '选择起点'}}
+        </view>
       </view>
-    </view>
-    <view class="divider"></view>
-    <view class="endpoint" data-target="end" bindtap="openSearch">
-      <view class="dot red"></view>
-      <view class="ep-text {{endName ? '' : 'placeholder'}}">
-        {{endName || '选择终点'}}
+      <view class="swap-btn" bindtap="onSwap">
+        <text class="swap-icon">&#x21C5;</text>
+      </view>
+      <view class="endpoint" data-target="end" bindtap="openSearch">
+        <view class="dot red"></view>
+        <view class="ep-text {{endName ? '' : 'placeholder'}}">
+          {{endName || '选择终点'}}
+        </view>
       </view>
     </view>
   </view>
 
-  <!-- 出行方式 -->
-  <view class="mode-bar card">
-    <view wx:for="{{modes}}" wx:key="value"
-      class="mode-item {{mode === item.value ? 'active' : ''}}"
-      data-mode="{{item.value}}" bindtap="onModeChange">
-      <text class="mode-icon">{{item.icon}}</text>
-      <text>{{item.label}}</text>
+  <!-- 地图区域 -->
+  <view class="map-wrapper">
+    <map
+      id="routeMap"
+      class="route-map"
+      longitude="{{mapLongitude}}"
+      latitude="{{mapLatitude}}"
+      scale="{{mapScale}}"
+      markers="{{markers}}"
+      polyline="{{polyline}}"
+      show-location="{{true}}"
+      enable-zoom="{{true}}"
+      enable-scroll="{{true}}"
+      enable-rotate="{{false}}"
+      show-compass="{{true}}"
+      show-scale="{{true}}"
+      subkey="QCMBZ-EIMKQ-SXS5E-4YV4K-BIAYV-KGF3N"
+    />
+
+    <!-- 清除路线按钮 -->
+    <view wx:if="{{route}}" class="clear-route-btn" bindtap="onClearRoute">
+      <text>&#x2715;</text>
     </view>
   </view>
 
-  <!-- 规划按钮 -->
-  <button class="primary plan-btn" bindtap="onPlanRoute"
-    disabled="{{!startId || !endId || loading}}">
-    {{loading ? '规划中…' : '开始导航'}}
-  </button>
+  <!-- 底部面板 -->
+  <view class="bottom-sheet {{showResult ? 'expanded' : ''}}">
+    <!-- 出行方式 -->
+    <view class="mode-bar">
+      <view wx:for="{{modes}}" wx:key="value"
+        class="mode-item {{mode === item.value ? 'active' : ''}}"
+        data-mode="{{item.value}}" bindtap="onModeChange">
+        <text class="mode-icon">{{item.icon}}</text>
+        <text class="mode-label">{{item.label}}</text>
+      </view>
+    </view>
 
-  <!-- 错误提示 -->
-  <view wx:if="{{error}}" class="error-hint">{{error}}</view>
+    <!-- 规划按钮 -->
+    <button class="plan-btn" bindtap="onPlanRoute"
+      disabled="{{!startId || !endId || loading}}">
+      {{loading ? '规划中...' : '开始导航'}}
+    </button>
 
-  <!-- 路线结果 -->
-  <route-card wx:if="{{route}}"
-    distance="{{route.distance}}" duration="{{route.duration}}"
-    steps="{{route.steps}}" />
+    <!-- 错误提示 -->
+    <view wx:if="{{error}}" class="error-hint">{{error}}</view>
+
+    <!-- 路线结果摘要 -->
+    <view wx:if="{{route && showResult}}" class="result-summary">
+      <view class="summary-row" bindtap="onToggleResult">
+        <view class="summary-stat">
+          <text class="stat-value">{{displayDistance}}</text>
+          <text class="stat-label">总距离</text>
+        </view>
+        <view class="summary-divider"></view>
+        <view class="summary-stat">
+          <text class="stat-value">{{displayTime}}</text>
+          <text class="stat-label">预计时间</text>
+        </view>
+        <view class="summary-divider"></view>
+        <view class="summary-stat">
+          <text class="stat-value">{{steps.length}}站</text>
+          <text class="stat-label">途经</text>
+        </view>
+      </view>
+
+      <!-- 步骤列表 -->
+      <scroll-view scroll-y class="steps-scroll">
+        <view wx:for="{{steps}}" wx:key="index" class="step-item">
+          <view class="step-dot-wrap">
+            <view class="step-dot {{item.isLast ? 'last' : ''}}"></view>
+            <view wx:if="{{!item.isLast}}" class="step-line"></view>
+          </view>
+          <view class="step-content">
+            <text class="step-text" wx:if="{{!item.isLast}}">
+              从 <text class="step-name">{{item.fromName}}</text> 向{{item.direction}}步行至 <text class="step-name">{{item.toName}}</text>
+            </text>
+            <text class="step-text" wx:else>
+              到达 <text class="step-name highlight">{{item.toName}}</text>
+            </text>
+            <text class="step-dist" wx:if="{{!item.isLast}}">{{item.distance}}m</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 路线结果折叠触发 -->
+    <view wx:if="{{route && !showResult}}" class="result-collapsed" bindtap="onToggleResult">
+      <text class="collapsed-text">{{displayDistance}} | {{displayTime}} | {{steps.length}}站途经</text>
+      <text class="collapsed-arrow">&#x25B2;</text>
+    </view>
+  </view>
 </view>
 
 <!-- 搜索弹窗 -->
@@ -57,6 +129,7 @@
     <scroll-view scroll-y class="sheet-list">
       <poi-card wx:for="{{searchResults}}" wx:key="id"
         id="{{item.id}}" name="{{item.name}}" type="{{item.type}}"
+        latitude="{{item.latitude}}" longitude="{{item.longitude}}"
         bind:tap="onSelectPoi" />
     </scroll-view>
   </view>

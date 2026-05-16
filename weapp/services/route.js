@@ -1,10 +1,10 @@
 const { request } = require('./request');
 
-function planRoute({ startId, endId, mode = 'walk' }) {
+function planRoute({ startId, endId }) {
   return request({
-    url: '/route/plan',
+    url: '/route',
     method: 'POST',
-    data: { startId, endId, mode }
+    data: { start: startId, end: endId }
   });
 }
 

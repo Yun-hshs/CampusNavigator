@@ -1,0 +1,134 @@
+.page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+.form-card {
+  background: #ffffff;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+  padding: 32rpx;
+  margin-bottom: 32rpx;
+}
+
+.form-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 24rpx;
+}
+
+.feedback-textarea {
+  width: 100%;
+  min-height: 200rpx;
+  border: 2rpx solid #e8e8e8;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  color: #333333;
+  box-sizing: border-box;
+  line-height: 1.6;
+}
+
+.feedback-textarea:focus {
+  border-color: #667eea;
+}
+
+.char-count {
+  text-align: right;
+  font-size: 22rpx;
+  color: #bbbbbb;
+  margin-top: 8rpx;
+}
+
+.contact-input {
+  width: 100%;
+  height: 80rpx;
+  border: 2rpx solid #e8e8e8;
+  border-radius: 16rpx;
+  padding: 0 20rpx;
+  font-size: 28rpx;
+  color: #333333;
+  box-sizing: border-box;
+  margin-top: 16rpx;
+}
+
+.contact-input:focus {
+  border-color: #667eea;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #ffffff;
+  font-size: 30rpx;
+  font-weight: 500;
+  border-radius: 999rpx;
+  margin-top: 24rpx;
+  border: none;
+}
+
+.submit-btn[disabled] {
+  opacity: 0.5;
+}
+
+.submit-btn:active {
+  opacity: 0.85;
+}
+
+.history-section {
+  margin-top: 8rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 16rpx;
+  padding-left: 4rpx;
+}
+
+.fb-card {
+  background: #ffffff;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  border-left: 6rpx solid #667eea;
+}
+
+.fb-content {
+  font-size: 28rpx;
+  color: #333333;
+  line-height: 1.6;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.fb-footer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.fb-time {
+  font-size: 22rpx;
+  color: #bbbbbb;
+}
+
+.fb-contact {
+  font-size: 22rpx;
+  color: #999999;
+}
+
+.fb-delete {
+  font-size: 22rpx;
+  color: #ff4d4f;
+  margin-left: auto;
+  padding: 4rpx 8rpx;
+}

@@ -1,0 +1,33 @@
+<view class="page">
+  <view wx:if="{{isEmpty}}" class="empty-state">
+    <text class="empty-icon">&#x2605;</text>
+    <text class="empty-text">还没有收藏的地点</text>
+    <text class="empty-hint">在首页搜索并定位建筑后可添加收藏</text>
+  </view>
+
+  <view wx:else>
+    <view class="list-header">
+      <text class="header-count">共 {{list.length}} 个收藏</text>
+      <text class="clear-btn" bindtap="onClearAll">清空</text>
+    </view>
+    <view wx:for="{{list}}" wx:key="id"
+          class="fav-card"
+          data-building-id="{{item.buildingId}}"
+          data-name="{{item.name}}"
+          data-latitude="{{item.latitude}}"
+          data-longitude="{{item.longitude}}"
+          bindtap="onTapItem">
+      <view class="fav-main">
+        <text class="fav-name">{{item.name}}</text>
+        <text wx:if="{{item.type}}" class="fav-type">{{item.type}}</text>
+      </view>
+      <text wx:if="{{item.description}}" class="fav-desc">{{item.description}}</text>
+      <view class="fav-footer">
+        <text class="fav-time">{{item.addTimeFormatted}}</text>
+        <view class="fav-delete" data-id="{{item.id}}" catchtap="onDeleteItem">
+          <text>删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

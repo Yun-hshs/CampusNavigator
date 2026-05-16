@@ -1,4 +1,90 @@
-<view class="container">
-  <view class="card user">头像 / 昵称 / 学号（可选）</view>
-  <view class="card menu">收藏地点、历史路线、反馈、设置</view>
+<view class="profile-page">
+  <!-- 状态栏占位 -->
+  <view class="status-bar" style="height: {{statusBarHeight}}px;"></view>
+
+  <!-- 渐变头部 -->
+  <view class="header">
+    <view class="header-bg"></view>
+    <view class="user-info" bindtap="onTapAvatar">
+      <image class="avatar" src="{{avatarUrl}}" mode="aspectFill" />
+      <view class="user-detail">
+        <text class="nickname">{{nickname}}</text>
+        <text class="student-id" wx:if="{{studentId}}">学号 {{studentId}}</text>
+        <text class="student-id tip" wx:else>点击登录，享受更多服务</text>
+      </view>
+      <text class="arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 数据统计 -->
+  <view class="stats-card">
+    <view class="stat-item" bindtap="goFavorites">
+      <text class="stat-num">{{favCount}}</text>
+      <text class="stat-label">收藏</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item" bindtap="goHistory">
+      <text class="stat-num">{{historyCount}}</text>
+      <text class="stat-label">历史</text>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat-item">
+      <text class="stat-num">{{feedbackCount}}</text>
+      <text class="stat-label">反馈</text>
+    </view>
+  </view>
+
+  <!-- 常用功能 -->
+  <view class="menu-section">
+    <view class="menu-title">常用功能</view>
+    <view class="menu-card">
+      <view class="menu-item" bindtap="goFavorites">
+        <view class="menu-icon fav-icon">
+          <text class="icon-text">&#x2605;</text>
+        </view>
+        <text class="menu-label">收藏地点</text>
+        <text class="menu-desc">查看收藏的校园地点</text>
+        <text class="arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goHistory">
+        <view class="menu-icon history-icon">
+          <text class="icon-text">&#x25F7;</text>
+        </view>
+        <text class="menu-label">历史路线</text>
+        <text class="menu-desc">浏览历史导航记录</text>
+        <text class="arrow">›</text>
+      </view>
+      <view class="menu-item" bindtap="goFeedback">
+        <view class="menu-icon feedback-icon">
+          <text class="icon-text">&#x270E;</text>
+        </view>
+        <text class="menu-label">意见反馈</text>
+        <text class="menu-desc">帮助我们做得更好</text>
+        <text class="arrow">›</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 其他 -->
+  <view class="menu-section">
+    <view class="menu-title">其他</view>
+    <view class="menu-card">
+      <view class="menu-item" bindtap="goSettings">
+        <view class="menu-icon settings-icon">
+          <text class="icon-text">&#x2699;</text>
+        </view>
+        <text class="menu-label">设置</text>
+        <text class="menu-desc">主题、缓存、关于</text>
+        <text class="arrow">›</text>
+      </view>
+      <view class="menu-item last" bindtap="goAbout">
+        <view class="menu-icon about-icon">
+          <text class="icon-text">&#x2139;</text>
+        </view>
+        <text class="menu-label">关于</text>
+        <text class="menu-desc">校园导航系统 v1.0</text>
+        <text class="arrow">›</text>
+      </view>
+    </view>
+  </view>
 </view>

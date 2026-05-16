@@ -1,0 +1,32 @@
+<view class="page">
+  <view class="form-card">
+    <view class="form-title">提交反馈</view>
+    <textarea class="feedback-textarea"
+      placeholder="请描述您遇到的问题或建议..."
+      maxlength="500"
+      value="{{content}}"
+      bindinput="onContentInput"
+      auto-height="{{true}}" />
+    <view class="char-count">{{content.length}}/500</view>
+    <input class="contact-input"
+      placeholder="联系方式（选填，方便我们回复您）"
+      value="{{contact}}"
+      bindinput="onContactInput" />
+    <button class="submit-btn" bindtap="onSubmit"
+      disabled="{{submitting || !content.trim()}}">
+      {{submitting ? '提交中...' : '提交反馈'}}
+    </button>
+  </view>
+
+  <view wx:if="{{feedbackList.length}}" class="history-section">
+    <view class="section-title">我的反馈 ({{feedbackList.length}})</view>
+    <view wx:for="{{feedbackList}}" wx:key="id" class="fb-card">
+      <text class="fb-content">{{item.content}}</text>
+      <view class="fb-footer">
+        <text class="fb-time">{{item.timeFormatted}}</text>
+        <text wx:if="{{item.contact}}" class="fb-contact">联系: {{item.contact}}</text>
+        <view class="fb-delete" data-id="{{item.id}}" catchtap="onDeleteFeedback">删除</view>
+      </view>
+    </view>
+  </view>
+</view>

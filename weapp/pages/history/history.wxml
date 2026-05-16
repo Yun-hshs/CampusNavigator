@@ -1,0 +1,40 @@
+<view class="page">
+  <view wx:if="{{isEmpty}}" class="empty-state">
+    <text class="empty-icon">&#x25F7;</text>
+    <text class="empty-text">暂无导航记录</text>
+    <text class="empty-hint">完成一次路线规划后将自动记录</text>
+  </view>
+
+  <view wx:else>
+    <view class="list-header">
+      <text class="header-count">共 {{list.length}} 条记录</text>
+      <text class="clear-btn" bindtap="onClearAll">清空</text>
+    </view>
+    <view wx:for="{{list}}" wx:key="id"
+          class="history-card"
+          data-start-id="{{item.startId}}"
+          data-start-name="{{item.startName}}"
+          data-end-id="{{item.endId}}"
+          data-end-name="{{item.endName}}"
+          bindtap="onTapItem">
+      <view class="route-line">
+        <view class="dot green"></view>
+        <text class="point-name">{{item.startName}}</text>
+        <text class="route-arrow">&#x2192;</text>
+        <view class="dot red"></view>
+        <text class="point-name">{{item.endName}}</text>
+      </view>
+      <view class="route-meta">
+        <text class="meta-badge">{{item.distance}}m</text>
+        <text class="meta-badge">{{item.modeText}}约{{item.time}}分钟</text>
+      </view>
+      <view class="card-footer">
+        <text class="meta-time">{{item.timeFormatted}}</text>
+        <view class="card-actions">
+          <text class="action-replay">重新导航</text>
+          <text class="action-delete" data-id="{{item.id}}" catchtap="onDeleteItem">删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

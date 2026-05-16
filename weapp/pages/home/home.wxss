@@ -235,6 +235,32 @@
   border-radius: 20rpx;
 }
 
+/* 收藏按钮 */
+.fav-float-btn {
+  position: absolute;
+  bottom: 120rpx;
+  right: 30rpx;
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44rpx;
+  color: #cccccc;
+  z-index: 50;
+}
+
+.fav-float-btn:active {
+  transform: scale(0.9);
+}
+
+.fav-float-btn.active {
+  color: #f6d365;
+}
+
 /* 快捷操作 */
 .quick-actions {
   display: flex;

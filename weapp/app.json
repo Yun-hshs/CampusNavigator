@@ -3,7 +3,11 @@
     "pages/login/login",
     "pages/home/home",
     "pages/route/route",
-    "pages/profile/profile"
+    "pages/profile/profile",
+    "pages/favorites/favorites",
+    "pages/history/history",
+    "pages/feedback/feedback",
+    "pages/settings/settings"
   ],
   "window": {
     "navigationBarTitleText": "校园导航",

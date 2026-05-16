@@ -1,11 +1,11 @@
 <view class="route-card card">
   <view class="route-summary">
     <view class="summary-item">
-      <view class="summary-value">{{distance}}</view>
+      <view class="summary-value">{{displayDistance}}</view>
       <view class="summary-label">总距离</view>
     </view>
     <view class="summary-item">
-      <view class="summary-value">{{duration}}</view>
+      <view class="summary-value">{{displayTime}}</view>
       <view class="summary-label">预计时间</view>
     </view>
   </view>
